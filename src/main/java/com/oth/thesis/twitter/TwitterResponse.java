@@ -1,3 +1,5 @@
+package com.oth.thesis.twitter;
+
 import java.util.Collection;
 
 public class TwitterResponse {

@@ -1,10 +1,12 @@
+package com.oth.thesis.twitter;
+
 public class TwitterData {
     public long id;
     public String text;
 
     @Override
     public String toString() {
-        return "TwitterData{" +
+        return "com.oth.thesis.twitter.TwitterData{" +
                 "id=" + id +
                 ", text='" + text + '\'' +
                 '}';

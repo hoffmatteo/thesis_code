@@ -1,4 +1,8 @@
+package com.oth.thesis;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.oth.thesis.twitter.TwitterData;
+import com.oth.thesis.twitter.TwitterResponse;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.CookieSpecs;
