@@ -31,6 +31,7 @@ public class TwitterCrawler {
     public static final String ANSI_WHITE = "\u001B[37m";
     public static final int maxTweetBatch = 100; //set by twitter
     public static final int maxNumTweets = 1000; //set by me
+    public static final int minTweetBatch = 10; //set by twitter
     private final String bearerToken;
     private CloseableHttpClient httpClient;
     private final String englishTweets = " lang:en";
@@ -62,11 +63,11 @@ public class TwitterCrawler {
                 ArrayList<NameValuePair> queryParameters;
                 queryParameters = new ArrayList<>();
                 queryParameters.add(new BasicNameValuePair("query", query + englishTweets + noRetweets));
-                if (amount - numTweets > maxTweetBatch) {
+                if (amount - numTweets >= maxTweetBatch) {
                     //request the maximum amount as often as needed
                     queryParameters.add(new BasicNameValuePair("max_results", Integer.toString(maxTweetBatch)));
                 } else {
-                    queryParameters.add(new BasicNameValuePair("max_results", Integer.toString(amount - numTweets)));
+                    queryParameters.add(new BasicNameValuePair("max_results", Integer.toString(Math.max((amount - numTweets), minTweetBatch))));
                 }
                 if (numTweets != 0) {
                     //next token ensures that no duplicate tweets are sent by twitter
@@ -87,8 +88,7 @@ public class TwitterCrawler {
                     System.out.println(searchResponse);
                     twitterReponse = objectMapper.readValue(searchResponse, TwitterResponse.class);
                     for (TwitterData data : twitterReponse.data) {
-                        System.out.println(ANSI_GREEN + "Found tweet: " + data.text + ANSI_RESET);
-                        LexiconMethod.analyse(data.text);
+                        LexiconMethod.analyze(data);
                         numTweets++;
                     }
                 }

@@ -27,3 +27,5 @@ so,2.0
 somewhat,0.8
 utterly,2.0
 very,2.5
+scarcely,0.5
+barely,0.1
