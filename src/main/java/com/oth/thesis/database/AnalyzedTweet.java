@@ -18,6 +18,12 @@ public class AnalyzedTweet {
         this.lexicon_score = lexicon_score;
     }
 
+    public AnalyzedTweet(Long id, String text) {
+        this.id = id;
+        this.text = text;
+        this.lexicon_score = lexicon_score;
+    }
+
     public AnalyzedTweet() {
     }
 

@@ -2,7 +2,6 @@ package com.oth.thesis;
 
 import com.oth.thesis.database.AnalyzedTweet;
 import com.oth.thesis.twitter.TwitterCrawler;
-import com.oth.thesis.twitter.TwitterData;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -42,61 +41,67 @@ public class LexiconMethod {
             createIntensityList();
             createEmojiDictionary();
             TwitterCrawler crawler = new TwitterCrawler();
-            crawler.crawlTweets(50, "ukraine");
-
-
-            //analyze("Unfortunately, they are not bright \uD83D\uDE06.");
+            //ZelenskyyUA, Lebron, Bitcoin, Disney, Scholz, Microsoft
+            //crawler.crawlTweets(2000, "Microsoft", sessionFactory);
+            analyzeTweets();
         } catch (IOException ex) {
             ex.printStackTrace();
 
         }
     }
 
-    public static void analyze(TwitterData tweet) {
+    public static void analyzeTweets() {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        String[] words = tweet.text.split(" ");
-        double score = 0.0;
-        int index = 0;
-        //TODO better
-        System.out.println(ANSI_GREEN + "Analyzing tweet: " + tweet + ANSI_RESET);
-        for (int i = 0; i < words.length; i++) {
-            words[i] = preprocess(words[i]);
-        }
-        for (String word : words) {
-            if (sentimentDictionary.containsKey(word)) {
-                if (word.equals("no")) {
-                    if (words.length - 1 > index) {
-                        if (sentimentDictionary.containsKey(words[index + 1])) {
-                            //do not add score as it is a negation
-                            index++;
-                            continue;
+        List<AnalyzedTweet> result = session.createQuery("from AnalyzedTweet ", AnalyzedTweet.class).list();
+        result.forEach(tweet -> {
+
+            String[] words = tweet.getText().split(" ");
+            double score = 0.0;
+            int index = 0;
+            System.out.println(ANSI_GREEN + "Analyzing tweet: " + tweet + ANSI_RESET);
+            for (int i = 0; i < words.length; i++) {
+                words[i] = preprocess(words[i]);
+            }
+            for (String word : words) {
+                if (sentimentDictionary.containsKey(word)) {
+                    if (word.equals("no")) {
+                        if (words.length - 1 > index) {
+                            if (sentimentDictionary.containsKey(words[index + 1])) {
+                                //do not add score as it is a negation
+                                index++;
+                                continue;
+                            }
                         }
                     }
-                }
-                int polarity = 1;
-                for (int tempIndex = index - 1; tempIndex >= 0 && index - 2 <= tempIndex; tempIndex--) {
-                    if (negationDictionary.contains(words[tempIndex])) {
-                        polarity *= -1;
-                        //System.out.println("Detected negation word " + words[tempIndex]);
-                    } else if (intensityDictionary.containsKey(words[tempIndex])) {
-                        polarity *= intensityDictionary.get(words[tempIndex]);
+                    int polarity = 1;
+                    for (int tempIndex = index - 1; tempIndex >= 0 && index - 2 <= tempIndex; tempIndex--) {
+                        if (negationDictionary.contains(words[tempIndex])) {
+                            polarity *= -1;
+                            //System.out.println("Detected negation word " + words[tempIndex]);
+                        } else if (intensityDictionary.containsKey(words[tempIndex])) {
+                            polarity *= intensityDictionary.get(words[tempIndex]);
+                        }
                     }
-                }
-                score += polarity * sentimentDictionary.get(word);
-                System.out.println("Detected sentiment word " + word + " with polarity " + polarity * sentimentDictionary.get(word));
-            } /*else if (emojiDictionary.containsKey(word)) {
+                    score += polarity * sentimentDictionary.get(word);
+                    System.out.println("Detected sentiment word " + word + " with polarity " + polarity * sentimentDictionary.get(word));
+
+                } /*else if (emojiDictionary.containsKey(word)) {
                 score += emojiDictionary.get(word);
                 //😯
             }
             */
-            index++;
-        }
-        //TDOo
-        session.saveOrUpdate(new AnalyzedTweet(tweet.id, tweet.text, score));
-        System.out.println(TwitterCrawler.ANSI_BLUE + "Final score: " + score + ANSI_RESET);
+                index++;
+            }
+            //TDOo
+            System.out.println(TwitterCrawler.ANSI_BLUE + "Final score: " + score + ANSI_RESET);
+            tweet.setLexicon_score(score);
+            session.saveOrUpdate(tweet);
+        });
+
         session.getTransaction().commit();
         session.close();
+
 
     }
 

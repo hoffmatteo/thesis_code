@@ -1,7 +1,7 @@
 package com.oth.thesis.twitter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.oth.thesis.LexiconMethod;
+import com.oth.thesis.database.AnalyzedTweet;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.CookieSpecs;
@@ -13,6 +13,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -30,7 +32,7 @@ public class TwitterCrawler {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
     public static final int maxTweetBatch = 100; //set by twitter
-    public static final int maxNumTweets = 1000; //set by me
+    public static final int maxNumTweets = 2000; //set by me
     public static final int minTweetBatch = 10; //set by twitter
     private final String bearerToken;
     private CloseableHttpClient httpClient;
@@ -45,7 +47,7 @@ public class TwitterCrawler {
 
     }
 
-    public void crawlTweets(int amount, String query) {
+    public void crawlTweets(int amount, String query, SessionFactory sessionFactory) {
         if (amount > maxNumTweets) {
             return;
         }
@@ -70,8 +72,13 @@ public class TwitterCrawler {
                     queryParameters.add(new BasicNameValuePair("max_results", Integer.toString(Math.max((amount - numTweets), minTweetBatch))));
                 }
                 if (numTweets != 0) {
-                    //next token ensures that no duplicate tweets are sent by twitter
-                    queryParameters.add(new BasicNameValuePair("next_token", twitterReponse.meta.next_token));
+                    if (twitterReponse.meta.next_token != null) {
+                        //next token ensures that no duplicate tweets are sent by twitter
+                        queryParameters.add(new BasicNameValuePair("next_token", twitterReponse.meta.next_token));
+                    } else {
+                        System.out.println("No more tweets available!");
+                        break;
+                    }
                 }
 
                 uriBuilder.addParameters(queryParameters);
@@ -88,7 +95,12 @@ public class TwitterCrawler {
                     System.out.println(searchResponse);
                     twitterReponse = objectMapper.readValue(searchResponse, TwitterResponse.class);
                     for (TwitterData data : twitterReponse.data) {
-                        LexiconMethod.analyze(data);
+                        //LexiconMethod.analyze(data);
+                        Session session = sessionFactory.openSession();
+                        session.beginTransaction();
+                        session.saveOrUpdate(new AnalyzedTweet(data.id, data.text));
+                        session.getTransaction().commit();
+                        session.close();
                         numTweets++;
                     }
                 }
