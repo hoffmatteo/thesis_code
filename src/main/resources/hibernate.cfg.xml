@@ -19,5 +19,6 @@
 
         <!-- Names the annotated entity class -->
         <mapping class="com.oth.thesis.database.AnalyzedTweet"/>
+        <mapping class="com.oth.thesis.database.TrainingTweet"/>
     </session-factory>
 </hibernate-configuration>

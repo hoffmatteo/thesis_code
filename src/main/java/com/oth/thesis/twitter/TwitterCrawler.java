@@ -3,6 +3,7 @@ package com.oth.thesis.twitter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oth.thesis.database.AnalyzedTweet;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
@@ -47,6 +48,34 @@ public class TwitterCrawler {
 
     }
 
+    public TwitterResponse getTweet(String id) throws URISyntaxException, IOException {
+        TwitterResponse twitterReponse = null;
+        ObjectMapper objectMapper = new ObjectMapper();
+
+
+        URIBuilder uriBuilder = new URIBuilder("https://api.twitter.com/2/tweets");
+        ArrayList<NameValuePair> queryParameters;
+        queryParameters = new ArrayList<>();
+        queryParameters.add(new BasicNameValuePair("ids", id));
+        queryParameters.add(new BasicNameValuePair("tweet.fields", "created_at"));
+        uriBuilder.addParameters(queryParameters);
+
+        HttpGet httpGet = new HttpGet(uriBuilder.build());
+        httpGet.setHeader("Authorization", String.format("Bearer %s", bearerToken));
+        httpGet.setHeader("Content-Type", "application/json");
+
+        HttpResponse response = httpClient.execute(httpGet);
+        HttpEntity entity = response.getEntity();
+        if (null != entity) {
+            String searchResponse = EntityUtils.toString(entity, "UTF-8");
+            System.out.println(searchResponse);
+            twitterReponse = objectMapper.readValue(searchResponse, TwitterResponse.class);
+            return twitterReponse;
+        }
+        return null;
+    }
+
+
     public void crawlTweets(int amount, String query, SessionFactory sessionFactory) {
         if (amount > maxNumTweets) {
             return;
@@ -59,8 +88,7 @@ public class TwitterCrawler {
 
         while (numTweets < amount) {
             try {
-                URIBuilder uriBuilder = null;
-                uriBuilder = new URIBuilder("https://api.twitter.com/2/tweets/search/recent");
+                URIBuilder uriBuilder = new URIBuilder("https://api.twitter.com/2/tweets/search/recent");
 
                 ArrayList<NameValuePair> queryParameters;
                 queryParameters = new ArrayList<>();
