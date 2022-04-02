@@ -11,8 +11,7 @@ public class SentimentAnalysis {
         try {
             SessionFactory factory = startDatabase();
             //LexiconMethod lexiconMethod = new LexiconMethod(factory);
-            NaiveBayes nb = new NaiveBayes(factory);
-            //TrainingData.create(factory);
+            MethodML nb = new MethodML(factory);
         } catch (Exception e) {
             e.printStackTrace();
         }

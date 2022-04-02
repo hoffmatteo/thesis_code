@@ -44,7 +44,7 @@ public class LexiconMethod {
             //TwitterCrawler crawler = new TwitterCrawler();
             //ZelenskyyUA, Lebron, Bitcoin, Disney, Scholz, Microsoft
             //crawler.crawlTweets(2000, "Microsoft", sessionFactory);
-            //analyzeTweets();
+            analyzeTweets();
             //analyzeTweet("Very funny \uD83D\uDE02!");
             //TrainingData.create(sessionFactory);
         } catch (IOException ex) {
