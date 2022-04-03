@@ -52,8 +52,27 @@ Relative absolute error                 55.2631 %
 Root relative squared error            104.8893 %
 Total Number of Instances             4727
 
-Lexicon Method Evaluation:
+** Lexicon Method Evaluation **
+
+
 Correctly classified instances:	        6855	 75.6873136800265%
 Incorrectly classified instances:	    2202	 24.3126863199735%
 Total number instances:	 9057
+
+
+** NaiveBayesMultinomialText **
+Correctly Classified Instances        3679               77.846  %
+Incorrectly Classified Instances      1047               22.154  %
+Kappa statistic                          0.4967
+Mean absolute error                      0.2611
+Root mean squared error                  0.4039
+Relative absolute error                 51.9069 %
+Root relative squared error             80.277  %
+Total Number of Instances             4726
+
+
+
+
+
+
 

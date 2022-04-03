@@ -3,8 +3,10 @@ package com.oth.thesis;
 import com.oth.thesis.database.TrainingTweet;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import weka.attributeSelection.InfoGainAttributeEval;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
+import weka.classifiers.bayes.NaiveBayesMultinomial;
 import weka.classifiers.functions.LibSVM;
 import weka.classifiers.functions.Logistic;
 import weka.classifiers.meta.FilteredClassifier;
@@ -15,6 +17,7 @@ import weka.core.Instances;
 import weka.core.SerializationHelper;
 import weka.core.converters.ArffLoader;
 import weka.core.converters.ConverterUtils;
+import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.StringToWordVector;
 
 import java.io.BufferedReader;
@@ -30,13 +33,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MethodML {
     private static final String test_arff_nominal = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\testTweetsNominal.arff";
     private static final String test_arff_numeric = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\testTweetsNumeric.arff";
-    private static final String nb_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\testmodel.model";
+    private static final String nb_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\nbmulti.model";
     private static final String j48_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\j48.model";
     private static final String logistic_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\logistic2.model";
     private static final String svm_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\svm.model";
     private static final String forest_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\forest.model";
     private static final String linear_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\linear.model";
     private static final String training_path = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\training.1600000.processed.noemoticon.csv";
+    private static final String dictionary_path = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\dictionary.txt";
+
     private final SessionFactory sessionFactory;
     //TODO better --> differ between nominal here
     private Instances trainingData;
@@ -49,27 +54,29 @@ public class MethodML {
         this.sessionFactory = sessionFactory;
         filter.setLowerCaseTokens(true);
         filter.setDoNotOperateOnPerClassBasis(true);
-        filter.setOptions(new String[]{"-W", "50000"});
+        filter.setOptions(new String[]{"-W", "3000", "-P", "10", "-M", "3", "-dictionary", dictionary_path});
 
         buildInstancesTrain(true);
         buildArffTest(true);
         buildInstancesTest(true);
 
 
-        //runNaiveBayes();
+        runNaiveBayes();
         //runLogisticRegression();
         //runLinearRegression();
         //runRandomForest();
-        runSVM();
+        //runSVM();
         //runJ48();
     }
 
     public void runNaiveBayes() throws Exception {
         boolean nominal = true;
-        buildInstancesTrain(nominal);
+        //buildInstancesTrain(nominal);
         //buildArffTest(nominal);
-        buildInstancesTest(nominal);
-        //train(new NaiveBayes(), nb_file);
+        //buildInstancesTest(nominal);
+        NaiveBayesMultinomial nb = new NaiveBayesMultinomial();
+        //nb.setOptions(new String[]{"-output-debug-info"});
+        train(nb, nb_file);
         test(nb_file, nominal);
     }
 
@@ -135,6 +142,13 @@ public class MethodML {
     public void test(String modelFile, boolean nominal) throws Exception {
         FilteredClassifier classifier = (FilteredClassifier) SerializationHelper.read(modelFile);
         evaluate(classifier, nominal);
+        InfoGainAttributeEval eval = new InfoGainAttributeEval();
+        Instances filteredTraining = Filter.useFilter(trainingData, filter);
+        eval.buildEvaluator(filteredTraining);
+        for (int i = 0; i < filteredTraining.numAttributes(); i++) {
+            System.out.println(filteredTraining.attribute(i) + ": " + eval.evaluateAttribute(i));
+        }
+
     }
 
 
@@ -148,16 +162,21 @@ public class MethodML {
         weka.core.SerializationHelper.write(modelFile, filteredClassifier);
 
 
+        /*
+        classifier.buildClassifier(trainingData);
+        weka.core.SerializationHelper.write(modelFile, classifier);
+
+         */
     }
 
-    public void evaluate(FilteredClassifier classifier, boolean nominal) throws Exception {
+    public void evaluate(Classifier classifier, boolean nominal) throws Exception {
         Evaluation eval = new Evaluation(trainingData);
         System.out.println("Training: " + trainingData.numAttributes());
         System.out.println("Testing: " + testData.numAttributes());
 
         eval.evaluateModel(classifier, testData);
 
-        System.out.println("** " + classifier.getClassifier().getClass() + " Evaluation with Datasets **");
+        //System.out.println("** " + classifier.getClassifier().getClass() + " Evaluation with Datasets **");
         System.out.println(eval.toSummaryString());
         //System.out.println(classifier);
         for (int i = 0; i < 50; i++) {
@@ -175,6 +194,7 @@ public class MethodML {
             double[] distribution = classifier.distributionForInstance(testData.instance(i));
             System.out.print("Class: " + className + ", Distribution: ");
             System.out.println(Arrays.toString(distribution));
+
         }
 
     }
@@ -267,8 +287,8 @@ public class MethodML {
         AtomicInteger counterNegative = new AtomicInteger(0);
 
         reader.lines().forEach(line -> {
-            if (counter.incrementAndGet() % 10 != 0) {
-                return;
+            if (counter.incrementAndGet() % 500 != 0) {
+                //return;
             }
             String[] components = line.split(",");
             if (components.length == 6) {

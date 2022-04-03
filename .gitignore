@@ -183,3 +183,4 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,java,maven,windows
 /data/training.1600000.processed.noemoticon.csv
+/models/nbmultitext.model
