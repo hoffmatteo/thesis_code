@@ -11,16 +11,18 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
 public class TrainingData {
-    private final static String data1 = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\tweeti-a.dist.tsv";
-    private final static String data2 = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\tweeti-b.dist.tsv";
+    private final static String data = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\tweeti-a.dist.tsv";
+    private final static String data1 = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\tweeti-b.dist.tsv";
+    private final static String data2 = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\twitter4242.txt";
 
 
     public static void create(SessionFactory sessionFactory) {
         try {
-            parseData1(sessionFactory);
+            parseData2(sessionFactory);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -30,7 +32,7 @@ public class TrainingData {
     private static void parseData1(SessionFactory sessionFactory) throws IOException {
         TwitterCrawler crawler = new TwitterCrawler();
 
-        try (Stream<String> stream = Files.lines(Paths.get(data2))) {
+        try (Stream<String> stream = Files.lines(Paths.get(data1))) {
             stream.forEach(line -> {
                 String[] components = line.split("\t");
                 //tweetID, userID, score
@@ -80,6 +82,34 @@ public class TrainingData {
                 }
             });
         }
+    }
 
+    private static void parseData2(SessionFactory sessionFactory) throws IOException {
+        try (Stream<String> stream = Files.lines(Paths.get(data2))) {
+            AtomicLong id = new AtomicLong(0);
+            stream.forEach(line -> {
+                String[] components = line.split("\t");
+                //tweetID, userID, score
+                if (components.length == 3) {
+                    Session session = sessionFactory.openSession();
+                    session.beginTransaction();
+                    double score = 0;
+                    int meanPos = Integer.parseInt(components[0]);
+                    int meanNeg = Integer.parseInt(components[1]);
+
+                    if (meanPos >= 1.5 * meanNeg) {
+                        score = 1.0;
+                    } else if (meanNeg >= 1.5 * meanPos) {
+                        score = -1.0;
+                    }
+
+
+                    session.saveOrUpdate(new TrainingTweet(id.incrementAndGet(), components[2], score));
+                    session.getTransaction().commit();
+                    session.close();
+                }
+            });
+        }
     }
 }
+

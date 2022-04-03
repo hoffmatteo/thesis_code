@@ -8,34 +8,52 @@ Relative absolute error                 72.0128 %
 Root relative squared error             99.3321 %
 Total Number of Instances             3121
 
-Naive Bayes
-Correctly Classified Instances        1877               60.141  %
-Incorrectly Classified Instances      1244               39.859  %
-Kappa statistic                          0.1868
-Mean absolute error                      0.4213
-Root mean squared error                  0.53
-Relative absolute error                 83.7681 %
-Root relative squared error            105.3782 %
-Total Number of Instances             3121
+** class weka.classifiers.bayes.NaiveBayes Evaluation with Datasets **
+
+Correctly Classified Instances        2883               60.9901 %
+Incorrectly Classified Instances      1844               39.0099 %
+Kappa statistic                          0.2073
+Mean absolute error                      0.4126
+Root mean squared error                  0.5241
+Relative absolute error                 82.1423 %
+Root relative squared error            104.3431 %
+Total Number of Instances             4727
 
 ** class weka.classifiers.functions.Logistic Evaluation with Datasets **
 
-Correctly Classified Instances        2123               68.0231 %
-Incorrectly Classified Instances       998               31.9769 %
-Kappa statistic                          0.2723
-Mean absolute error                      0.3234
-Root mean squared error                  0.5508
-Relative absolute error                 64.4218 %
-Root relative squared error            109.7163 %
-Total Number of Instances             3121
+Correctly Classified Instances        3156               66.7654 %
+Incorrectly Classified Instances      1571               33.2346 %
+Kappa statistic                          0.2543
+Mean absolute error                      0.3459
+Root mean squared error                  0.5033
+Relative absolute error                 68.8727 %
+Root relative squared error            100.202  %
+Total Number of Instances             4727
 
 ** class weka.classifiers.trees.RandomForest Evaluation with Datasets **
 
-Correctly Classified Instances        2174               69.6572 %
-Incorrectly Classified Instances       947               30.3428 %
-Kappa statistic                          0.3245
-Mean absolute error                      0.484
-Root mean squared error                  0.485
-Relative absolute error                 96.2236 %
-Root relative squared error             96.4287 %
-Total Number of Instances             3121
+Correctly Classified Instances        3297               69.7483 %
+Incorrectly Classified Instances      1430               30.2517 %
+Kappa statistic                          0.3591
+Mean absolute error                      0.4838
+Root mean squared error                  0.4849
+Relative absolute error                 96.3381 %
+Root relative squared error             96.5473 %
+Total Number of Instances             4727
+
+** class weka.classifiers.functions.LibSVM Evaluation with Datasets **
+
+Correctly Classified Instances        3415               72.2446 %
+Incorrectly Classified Instances      1312               27.7554 %
+Kappa statistic                          0.3803
+Mean absolute error                      0.2776
+Root mean squared error                  0.5268
+Relative absolute error                 55.2631 %
+Root relative squared error            104.8893 %
+Total Number of Instances             4727
+
+Lexicon Method Evaluation:
+Correctly classified instances:	        6855	 75.6873136800265%
+Incorrectly classified instances:	    2202	 24.3126863199735%
+Total number instances:	 9057
+

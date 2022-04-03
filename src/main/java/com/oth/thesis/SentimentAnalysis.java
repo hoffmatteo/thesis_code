@@ -10,8 +10,9 @@ public class SentimentAnalysis {
     public static void main(String[] args) {
         try {
             SessionFactory factory = startDatabase();
-            //LexiconMethod lexiconMethod = new LexiconMethod(factory);
-            MethodML nb = new MethodML(factory);
+            LexiconMethod lexiconMethod = new LexiconMethod(factory);
+            //MethodML nb = new MethodML(factory);
+            //TrainingData.create(factory);
         } catch (Exception e) {
             e.printStackTrace();
         }

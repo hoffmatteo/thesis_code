@@ -5,9 +5,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
-import weka.classifiers.bayes.NaiveBayes;
-import weka.classifiers.functions.LinearRegression;
-import weka.classifiers.functions.SimpleLogistic;
+import weka.classifiers.functions.LibSVM;
+import weka.classifiers.functions.Logistic;
 import weka.classifiers.meta.FilteredClassifier;
 import weka.classifiers.trees.RandomForest;
 import weka.core.Attribute;
@@ -34,10 +33,12 @@ public class MethodML {
     private static final String nb_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\testmodel.model";
     private static final String j48_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\j48.model";
     private static final String logistic_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\logistic2.model";
+    private static final String svm_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\svm.model";
     private static final String forest_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\forest.model";
     private static final String linear_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\linear.model";
     private static final String training_path = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\training.1600000.processed.noemoticon.csv";
     private final SessionFactory sessionFactory;
+    //TODO better --> differ between nominal here
     private Instances trainingData;
     private Instances testData;
     private Instances unfilteredTestData;
@@ -48,12 +49,19 @@ public class MethodML {
         this.sessionFactory = sessionFactory;
         filter.setLowerCaseTokens(true);
         filter.setDoNotOperateOnPerClassBasis(true);
-        filter.setOptions(new String[]{"-W", "5000"});
+        filter.setOptions(new String[]{"-W", "50000"});
+
+        buildInstancesTrain(true);
+        buildArffTest(true);
+        buildInstancesTest(true);
+
 
         //runNaiveBayes();
-        runLogisticRegression();
+        //runLogisticRegression();
         //runLinearRegression();
         //runRandomForest();
+        runSVM();
+        //runJ48();
     }
 
     public void runNaiveBayes() throws Exception {
@@ -68,14 +76,27 @@ public class MethodML {
     public void runLogisticRegression() throws Exception {
         boolean nominal = true;
         buildInstancesTrain(nominal);
-        buildArffTest(nominal);
+        //buildArffTest(nominal);
         buildInstancesTest(nominal);
-        SimpleLogistic log = new SimpleLogistic();
-        //log.setOptions(new String[]{"-S", "-M", "10"});
-        log.setOptions(new String[]{"-M", "10"});
+        Logistic log = new Logistic();
+        log.setOptions(new String[]{"-S", "-M", "10"});
 
-        train(log, logistic_file);
+        //train(log, logistic_file);
         test(logistic_file, nominal);
+
+    }
+
+    public void runSVM() throws Exception {
+        boolean nominal = true;
+        buildInstancesTrain(nominal);
+        //buildArffTest(nominal);
+        buildInstancesTest(nominal);
+        LibSVM svm = new LibSVM();
+        //linear
+        svm.setOptions(new String[]{"-K", "0"});
+
+        train(svm, svm_file);
+        test(svm_file, nominal);
 
     }
 
@@ -86,7 +107,7 @@ public class MethodML {
         buildInstancesTest(nominal);
         RandomForest forest = new RandomForest();
         forest.setOptions(new String[]{"-depth", "100"});
-        train(forest, forest_file);
+        //train(forest, forest_file);
         test(forest_file, nominal);
 
     }
@@ -96,7 +117,7 @@ public class MethodML {
         buildInstancesTrain(nominal);
         //buildArffTest(nominal);
         buildInstancesTest(nominal);
-        train(new LinearRegression(), linear_file);
+        //train(new LinearRegression(), linear_file);
         test(linear_file, nominal);
 
     }
@@ -106,7 +127,7 @@ public class MethodML {
         buildInstancesTrain(nominal);
         //buildArffTest(nominal);
         buildInstancesTest(nominal);
-        train(new NaiveBayes(), j48_file);
+        //train(new NaiveBayes(), j48_file);
         test(j48_file, nominal);
     }
 
@@ -246,7 +267,7 @@ public class MethodML {
         AtomicInteger counterNegative = new AtomicInteger(0);
 
         reader.lines().forEach(line -> {
-            if (counter.incrementAndGet() % 100 != 0) {
+            if (counter.incrementAndGet() % 10 != 0) {
                 return;
             }
             String[] components = line.split(",");

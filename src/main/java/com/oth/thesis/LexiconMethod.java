@@ -1,6 +1,7 @@
 package com.oth.thesis;
 
 import com.oth.thesis.database.AnalyzedTweet;
+import com.oth.thesis.database.TrainingTweet;
 import com.oth.thesis.twitter.TwitterCrawler;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -9,16 +10,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static com.oth.thesis.twitter.TwitterCrawler.ANSI_GREEN;
 import static com.oth.thesis.twitter.TwitterCrawler.ANSI_RESET;
 
 public class LexiconMethod {
-    private static final String sentiment_lexicon = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\vader_lexicon.txt";
-    private static final String negation_lexicon = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\negations.txt";
-    private static final String intensity_lexicon = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\intensities.txt";
-    private static final String emoji_lexicon = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\sentiment_lexicon_twitter.csv";
+    private static final String sentiment_lexicon = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\lexicons\\vader_lexicon.txt";
+    private static final String negation_lexicon = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\lexicons\\negations.txt";
+    private static final String intensity_lexicon = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\lexicons\\intensities.txt";
+    private static final String emoji_lexicon = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\lexicons\\sentiment_lexicon_twitter.csv";
     private final Map<String, Double> sentimentDictionary = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
     private final List<String> negationDictionary = new ArrayList<>();
     private final Map<String, Double> intensityDictionary = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
@@ -44,9 +46,10 @@ public class LexiconMethod {
             //TwitterCrawler crawler = new TwitterCrawler();
             //ZelenskyyUA, Lebron, Bitcoin, Disney, Scholz, Microsoft
             //crawler.crawlTweets(2000, "Microsoft", sessionFactory);
-            analyzeTweets();
+            //analyzeTweets();
             //analyzeTweet("Very funny \uD83D\uDE02!");
             //TrainingData.create(sessionFactory);
+            evaluate();
         } catch (IOException ex) {
             ex.printStackTrace();
 
@@ -112,6 +115,55 @@ public class LexiconMethod {
         session.close();
 
 
+    }
+
+    public void evaluate() {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        List<TrainingTweet> tweets = session.createQuery("from TrainingTweet ", TrainingTweet.class).list();
+        AtomicInteger falseTweets = new AtomicInteger(0);
+        AtomicInteger correctTweets = new AtomicInteger(0);
+
+        tweets.forEach(tweet -> {
+            double lexiconScore = analyzeTweet(tweet.getText());
+            double correctScore = tweet.getScore();
+            if (lexiconScore < -0.5 || lexiconScore > 0.5) {
+                if (sameSign(lexiconScore, correctScore)) {
+                    correctTweets.incrementAndGet();
+                } else {
+                    falseTweets.incrementAndGet();
+                }
+            } else if (correctScore == 0) {
+                correctTweets.incrementAndGet();
+            } else {
+                falseTweets.incrementAndGet();
+            }
+        });
+
+        /*
+        Correctly Classified Instances        2883               60.9901 %
+Incorrectly Classified Instances      1844               39.0099 %
+Kappa statistic                          0.2073
+Mean absolute error                      0.4126
+Root mean squared error                  0.5241
+Relative absolute error                 82.1423 %
+Root relative squared error            104.3431 %
+Total Number of Instances             4727
+         */
+        System.out.println("Lexicon Method Evaluation: ");
+        int totalInstances = correctTweets.get() + falseTweets.get();
+        double correctPercentage = (double) correctTweets.get() / totalInstances * 100;
+        double falsePercentage = (double) falseTweets.get() / totalInstances * 100;
+
+        System.out.println("Correctly classified instances:\t " + correctTweets.get() + "\t " + correctPercentage + "%");
+        System.out.println("Incorrectly classified instances:\t " + falseTweets.get() + "\t " + falsePercentage + "%");
+        System.out.println("Total number instances:\t " + totalInstances);
+
+
+    }
+
+    private boolean sameSign(double num1, double num2) {
+        return num1 >= 0 && num2 >= 0 || num1 < 0 && num2 < 0;
     }
 
     //TODO emojis
