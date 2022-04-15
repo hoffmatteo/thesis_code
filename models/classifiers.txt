@@ -19,38 +19,38 @@ Relative absolute error                 82.1423 %
 Root relative squared error            104.3431 %
 Total Number of Instances             4727
 
-** class weka.classifiers.functions.Logistic Evaluation with Datasets **
+** class weka.classifiers.functions.Logistic Evaluation with Datasets ** (94655 instances)
 
-Correctly Classified Instances        3156               66.7654 %
-Incorrectly Classified Instances      1571               33.2346 %
-Kappa statistic                          0.2543
-Mean absolute error                      0.3459
-Root mean squared error                  0.5033
-Relative absolute error                 68.8727 %
-Root relative squared error            100.202  %
-Total Number of Instances             4727
+Correctly Classified Instances        3658               77.4016 %
+Incorrectly Classified Instances      1068               22.5984 %
+Kappa statistic                          0.4692
+Mean absolute error                      0.3004
+Root mean squared error                  0.3976
+Relative absolute error                 59.7035 %
+Root relative squared error             79.0162 %
+Total Number of Instances             4726
 
-** class weka.classifiers.trees.RandomForest Evaluation with Datasets **
+** class weka.classifiers.trees.RandomForest Evaluation with Datasets ** (120000)
 
-Correctly Classified Instances        3297               69.7483 %
-Incorrectly Classified Instances      1430               30.2517 %
-Kappa statistic                          0.3591
-Mean absolute error                      0.4838
-Root mean squared error                  0.4849
-Relative absolute error                 96.3381 %
-Root relative squared error             96.5473 %
-Total Number of Instances             4727
+Correctly Classified Instances        3567               75.4761 %
+Incorrectly Classified Instances      1159               24.5239 %
+Kappa statistic                          0.4524
+Mean absolute error                      0.4091
+Root mean squared error                  0.4297
+Relative absolute error                 81.3284 %
+Root relative squared error             85.4085 %
+Total Number of Instances             4726
 
 ** class weka.classifiers.functions.LibSVM Evaluation with Datasets **
 
-Correctly Classified Instances        3415               72.2446 %
-Incorrectly Classified Instances      1312               27.7554 %
-Kappa statistic                          0.3803
-Mean absolute error                      0.2776
-Root mean squared error                  0.5268
-Relative absolute error                 55.2631 %
-Root relative squared error            104.8893 %
-Total Number of Instances             4727
+Correctly Classified Instances        3644               77.1054 %
+Incorrectly Classified Instances      1082               22.8946 %
+Kappa statistic                          0.4768
+Mean absolute error                      0.2289
+Root mean squared error                  0.4785
+Relative absolute error                 45.5221 %
+Root relative squared error             95.127  %
+Total Number of Instances             4726
 
 ** Lexicon Method Evaluation **
 
@@ -60,14 +60,15 @@ Incorrectly classified instances:	    2202	 24.3126863199735%
 Total number instances:	 9057
 
 
-** NaiveBayesMultinomialText **
-Correctly Classified Instances        3679               77.846  %
-Incorrectly Classified Instances      1047               22.154  %
-Kappa statistic                          0.4967
-Mean absolute error                      0.2611
-Root mean squared error                  0.4039
-Relative absolute error                 51.9069 %
-Root relative squared error             80.277  %
+** NaiveBayesMultinomial **         filter.setOptions(new String[]{"-W", "15000", "-M", "10", "-dictionary", dictionary_path, "-L"});
+
+Correctly Classified Instances        3718               78.6712 %
+Incorrectly Classified Instances      1008               21.3288 %
+Kappa statistic                          0.5119
+Mean absolute error                      0.2627
+Root mean squared error                  0.3906
+Relative absolute error                 52.2243 %
+Root relative squared error             77.618  %
 Total Number of Instances             4726
 
 
