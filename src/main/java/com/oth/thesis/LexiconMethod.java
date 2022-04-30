@@ -2,7 +2,6 @@ package com.oth.thesis;
 
 import com.oth.thesis.database.AnalyzedTweet;
 import com.oth.thesis.database.TrainingTweet;
-import com.oth.thesis.twitter.TwitterCrawler;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -12,9 +11,6 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
-
-import static com.oth.thesis.twitter.TwitterCrawler.ANSI_GREEN;
-import static com.oth.thesis.twitter.TwitterCrawler.ANSI_RESET;
 
 public class LexiconMethod {
     private static final String sentiment_lexicon = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\lexicons\\vader_lexicon.txt";
@@ -49,18 +45,18 @@ public class LexiconMethod {
             //analyzeTweets();
             //analyzeTweet("Very funny \uD83D\uDE02!");
             //TrainingData.create(sessionFactory);
-            evaluate();
+            //evaluate();
         } catch (IOException ex) {
             ex.printStackTrace();
 
         }
     }
 
-    public double analyzeTweet(String tweet) {
+    public double analyzeTweet(String tweet, boolean normalize) {
         String[] words = tweet.split(" ");
         double score = 0.0;
         int index = 0;
-        System.out.println(ANSI_GREEN + "Analyzing tweet: " + tweet + ANSI_RESET);
+        //System.out.println(ANSI_GREEN + "Analyzing tweet: " + tweet + ANSI_RESET);
         for (int i = 0; i < words.length; i++) {
             words[i] = preprocess(words[i]);
         }
@@ -85,17 +81,20 @@ public class LexiconMethod {
                     }
                 }
                 score += polarity * sentimentDictionary.get(word);
-                System.out.println("Detected sentiment word " + word + " with polarity " + polarity * sentimentDictionary.get(word));
+                //System.out.println("Detected sentiment word " + word + " with polarity " + polarity * sentimentDictionary.get(word));
 
             } else if (emojiDictionary.containsKey(word)) {
                 score += emojiDictionary.get(word);
-                System.out.println("Detected emoji " + word + " with polarity " + emojiDictionary.get(word));
+                //System.out.println("Detected emoji " + word + " with polarity " + emojiDictionary.get(word));
                 //😯
             }
 
             index++;
         }
-        System.out.println(TwitterCrawler.ANSI_BLUE + "Final score: " + score + ANSI_RESET);
+        //System.out.println(TwitterCrawler.ANSI_BLUE + "Final score: " + score + ANSI_RESET);
+        if (normalize) {
+            return normalizeScore(score);
+        }
         return score;
 
 
@@ -107,7 +106,7 @@ public class LexiconMethod {
         List<AnalyzedTweet> result = session.createQuery("from AnalyzedTweet ", AnalyzedTweet.class).list();
         result.forEach(tweet -> {
 
-            double score = analyzeTweet(tweet.getText());
+            double score = analyzeTweet(tweet.getText(), false);
             tweet.setLexicon_score(score);
             session.saveOrUpdate(tweet);
         });
@@ -115,6 +114,16 @@ public class LexiconMethod {
         session.close();
 
 
+    }
+
+    private double normalizeScore(double score) {
+        if (score < -0.5) {
+            return -1;
+        } else if (score > 0.5) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     public void evaluate() {
@@ -125,7 +134,7 @@ public class LexiconMethod {
         AtomicInteger correctTweets = new AtomicInteger(0);
 
         tweets.forEach(tweet -> {
-            double lexiconScore = analyzeTweet(tweet.getText());
+            double lexiconScore = analyzeTweet(tweet.getText(), false);
             double correctScore = tweet.getScore();
             if (lexiconScore < -0.5 || lexiconScore > 0.5) {
                 if (sameSign(lexiconScore, correctScore)) {

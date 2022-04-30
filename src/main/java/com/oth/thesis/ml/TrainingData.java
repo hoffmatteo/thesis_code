@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
@@ -85,28 +86,33 @@ public class TrainingData {
     }
 
     private static void parseData2(SessionFactory sessionFactory) throws IOException {
+        AtomicInteger countPositve = new AtomicInteger(0);
+        AtomicInteger countNegative = new AtomicInteger(0);
+        AtomicInteger countNeutral = new AtomicInteger(0);
         try (Stream<String> stream = Files.lines(Paths.get(data2))) {
             AtomicLong id = new AtomicLong(0);
             stream.forEach(line -> {
                 String[] components = line.split("\t");
                 //tweetID, userID, score
                 if (components.length == 3) {
-                    Session session = sessionFactory.openSession();
-                    session.beginTransaction();
+                    //Session session = sessionFactory.openSession();
+                    //session.beginTransaction();
                     double score = 0;
                     int meanPos = Integer.parseInt(components[0]);
                     int meanNeg = Integer.parseInt(components[1]);
 
                     if (meanPos >= 1.5 * meanNeg) {
                         score = 1.0;
+                        countPositve.incrementAndGet();
                     } else if (meanNeg >= 1.5 * meanPos) {
                         score = -1.0;
+                        countNegative.incrementAndGet();
                     }
 
 
-                    session.saveOrUpdate(new TrainingTweet(id.incrementAndGet(), components[2], score));
-                    session.getTransaction().commit();
-                    session.close();
+                    //session.saveOrUpdate(new TrainingTweet(id.incrementAndGet(), components[2], score));
+                    //session.getTransaction().commit();
+                    //session.close();
                 }
             });
         }

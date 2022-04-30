@@ -71,6 +71,42 @@ Relative absolute error                 52.2243 %
 Root relative squared error             77.618  %
 Total Number of Instances             4726
 
+** NaiveBayesMultinomial + LexiconMethod ** filter.setOptions(new String[]{"-W", "15000", "-M", "10", "-dictionary", dictionary_path, "-L"});
+Correctly Classified Instances        3806               80.5332 %
+Incorrectly Classified Instances       920               19.4668 %
+Kappa statistic                          0.5308
+Mean absolute error                      0.2502
+Root mean squared error                  0.3714
+Relative absolute error                 54.1702 %
+Root relative squared error             78.5574 %
+Total Number of Instances             4726
+
+** NaiveBayesMultinomial **         filter.setOptions(new String[]{"-W", "15000", "-M", "10", "-dictionary", dictionary_path, "-L", "-C"});
+
+Correctly Classified Instances        3689               78.0576 %
+Incorrectly Classified Instances      1037               21.9424 %
+Kappa statistic                          0.4948
+Mean absolute error                      0.2624
+Root mean squared error                  0.397
+Relative absolute error                 52.1598 %
+Root relative squared error             78.9026 %
+Total Number of Instances             4726
+
+** NaiveBayesMultinomial + LexiconMethod**         filter.setOptions(new String[]{"-W", "15000", "-M", "10", "-dictionary", dictionary_path, "-L", "-C"});
+
+
+Correctly Classified Instances        3801               80.4274 %
+Incorrectly Classified Instances       925               19.5726 %
+Kappa statistic                          0.5272
+Mean absolute error                      0.2485
+Root mean squared error                  0.3739
+Relative absolute error                 53.7918 %
+Root relative squared error             79.0944 %
+Total Number of Instances             4726
+
+
+
+
 
 
 

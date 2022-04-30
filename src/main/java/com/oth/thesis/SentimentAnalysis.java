@@ -11,10 +11,14 @@ public class SentimentAnalysis {
         try {
             SessionFactory factory = startDatabase();
             //LexiconMethod lexiconMethod = new LexiconMethod(factory);
-            MLMethod nb = new MLMethod(factory);
+            //MLMethod nb = new MLMethod(factory);
             //TrainingData.create(factory);
+            MLMethod nb = new MLMethod(factory);
+            //HybridMethod hybridMethod = new HybridMethod(factory);
+            //hybridMethod.try2();
         } catch (Exception e) {
             e.printStackTrace();
+
         }
 
 
