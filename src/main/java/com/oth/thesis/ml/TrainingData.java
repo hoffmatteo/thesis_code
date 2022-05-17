@@ -7,8 +7,12 @@ import com.oth.thesis.twitter.TwitterResponse;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -89,17 +93,20 @@ public class TrainingData {
         AtomicInteger countPositve = new AtomicInteger(0);
         AtomicInteger countNegative = new AtomicInteger(0);
         AtomicInteger countNeutral = new AtomicInteger(0);
-        try (Stream<String> stream = Files.lines(Paths.get(data2))) {
-            AtomicLong id = new AtomicLong(0);
-            stream.forEach(line -> {
+        AtomicLong id = new AtomicLong(0);
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(data2), StandardCharsets.UTF_8));
+            Stream<String> lines = reader.lines();
+            lines.forEach(line -> {
                 String[] components = line.split("\t");
                 //tweetID, userID, score
                 if (components.length == 3) {
-                    //Session session = sessionFactory.openSession();
-                    //session.beginTransaction();
+                    Session session = sessionFactory.openSession();
+                    session.beginTransaction();
                     double score = 0;
                     int meanPos = Integer.parseInt(components[0]);
                     int meanNeg = Integer.parseInt(components[1]);
+
 
                     if (meanPos >= 1.5 * meanNeg) {
                         score = 1.0;
@@ -107,15 +114,23 @@ public class TrainingData {
                     } else if (meanNeg >= 1.5 * meanPos) {
                         score = -1.0;
                         countNegative.incrementAndGet();
+                    } else {
+                        countNeutral.incrementAndGet();
                     }
 
 
-                    //session.saveOrUpdate(new TrainingTweet(id.incrementAndGet(), components[2], score));
-                    //session.getTransaction().commit();
-                    //session.close();
+                    session.saveOrUpdate(new TrainingTweet(id.incrementAndGet(), components[2], score));
+                    session.getTransaction().commit();
+                    session.close();
                 }
             });
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        System.out.println("Positive: " + countPositve.get());
+        System.out.println("Negative: " + countNegative.get());
+        System.out.println("Neutral: " + countNeutral.get());
+
     }
 }
 

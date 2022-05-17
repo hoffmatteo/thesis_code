@@ -1,7 +1,7 @@
 package com.oth.thesis.twitter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.oth.thesis.database.AnalyzedTweet;
+import com.oth.thesis.database.CaseStudyTweet;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -17,6 +17,8 @@ import org.apache.http.util.EntityUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -33,12 +35,13 @@ public class TwitterCrawler {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
     public static final int maxTweetBatch = 100; //set by twitter
-    public static final int maxNumTweets = 2000; //set by me
+    public static final int maxNumTweets = 100000000; //set by me
     public static final int minTweetBatch = 10; //set by twitter
     private final String bearerToken;
     private CloseableHttpClient httpClient;
     private final String englishTweets = " lang:en";
     private final String noRetweets = " -is:retweet";
+    private final String nextTokenFile = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\nextToken.txt";
 
     public TwitterCrawler() {
         bearerToken = System.getenv("bearertoken");
@@ -93,6 +96,7 @@ public class TwitterCrawler {
                 ArrayList<NameValuePair> queryParameters;
                 queryParameters = new ArrayList<>();
                 queryParameters.add(new BasicNameValuePair("query", query + englishTweets + noRetweets));
+                queryParameters.add(new BasicNameValuePair("tweet.fields", "created_at"));
                 if (amount - numTweets >= maxTweetBatch) {
                     //request the maximum amount as often as needed
                     queryParameters.add(new BasicNameValuePair("max_results", Integer.toString(maxTweetBatch)));
@@ -103,6 +107,13 @@ public class TwitterCrawler {
                     if (twitterReponse.meta.next_token != null) {
                         //next token ensures that no duplicate tweets are sent by twitter
                         queryParameters.add(new BasicNameValuePair("next_token", twitterReponse.meta.next_token));
+                        try (FileWriter fw = new FileWriter(nextTokenFile, true); BufferedWriter bw = new BufferedWriter(fw)) {
+                            bw.newLine();
+                            bw.append(twitterReponse.meta.next_token);
+                        } catch (IOException exception) {
+                            System.out.println(exception);
+                        }
+
                     } else {
                         System.out.println("No more tweets available!");
                         break;
@@ -122,21 +133,41 @@ public class TwitterCrawler {
                     String searchResponse = EntityUtils.toString(entity, "UTF-8");
                     System.out.println(searchResponse);
                     twitterReponse = objectMapper.readValue(searchResponse, TwitterResponse.class);
-                    for (TwitterData data : twitterReponse.data) {
-                        //LexiconMethod.analyze(data);
-                        Session session = sessionFactory.openSession();
-                        session.beginTransaction();
-                        session.saveOrUpdate(new AnalyzedTweet(data.id, data.text));
-                        session.getTransaction().commit();
-                        session.close();
-                        numTweets++;
+                    if (twitterReponse != null) {
+                        if (twitterReponse.status == 429) {
+                            Thread.sleep(16 * 60 * 1000);
+                        } else if (twitterReponse.data != null) {
+
+                            for (TwitterData data : twitterReponse.data) {
+                                //LexiconMethod.analyze(data);
+                                Session session = sessionFactory.openSession();
+                                session.beginTransaction();
+                                session.saveOrUpdate(new CaseStudyTweet(data.id, data.text, data.created_at, query));
+                                session.getTransaction().commit();
+                                session.close();
+                                numTweets++;
+                            }
+                        }
                     }
                 }
             } catch (IOException | URISyntaxException e) {
 
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
+        if (twitterReponse != null) {
+            if (twitterReponse.meta.next_token != null) {
+                System.out.println(twitterReponse.meta.next_token);
+                try (FileWriter fw = new FileWriter(nextTokenFile, true); BufferedWriter bw = new BufferedWriter(fw)) {
+                    bw.newLine();
+                    bw.append("Final token for query " + query + " : " + twitterReponse.meta.next_token);
+                } catch (IOException exception) {
+                    System.out.println(exception);
+                }
 
+            }
+        }
     }
 
 

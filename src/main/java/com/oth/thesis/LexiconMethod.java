@@ -45,7 +45,7 @@ public class LexiconMethod {
             //analyzeTweets();
             //analyzeTweet("Very funny \uD83D\uDE02!");
             //TrainingData.create(sessionFactory);
-            //evaluate();
+            evaluate();
         } catch (IOException ex) {
             ex.printStackTrace();
 
@@ -178,7 +178,32 @@ Total Number of Instances             4727
     //TODO emojis
     private String preprocess(String word) {
         String removedPunctuation = word.replaceAll("\\p{Punct}", "");
-        return removedPunctuation.toLowerCase(Locale.ROOT);
+        removedPunctuation = removedPunctuation.toLowerCase(Locale.ROOT);
+        StringBuilder sb = new StringBuilder();
+
+        if (word.length() >= 1) {
+            char previousChar = word.charAt(0);
+            int count = 1;
+            //word.replaceAll("")
+            int idx;
+            sb.append(previousChar);
+
+            for (int i = 1; i < word.length(); i++) {
+                char c = word.charAt(i);
+                if (previousChar == c) {
+                    count++; //
+                    if (count < 3) {
+                        sb.append(c);
+                    }
+                } else {
+                    sb.append(c);
+                    count = 1;
+                }
+                previousChar = c;
+            }
+        }
+        return sb.toString();
+
     }
 
 

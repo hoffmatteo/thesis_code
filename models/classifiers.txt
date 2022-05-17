@@ -1,115 +1,85 @@
-J48
-Correctly Classified Instances        2119               67.8949 %
-Incorrectly Classified Instances      1002               32.1051 %
-Kappa statistic                          0.2708
-Mean absolute error                      0.3622
-Root mean squared error                  0.4996
-Relative absolute error                 72.0128 %
-Root relative squared error             99.3321 %
-Total Number of Instances             3121
+- Naive Bayes Multinomial: (1.6MM)
+Correctly Classified Instances        4292               79.4226 %
+Incorrectly Classified Instances      1112               20.5774 %
+Kappa statistic                          0.527
+Mean absolute error                      0.2442
+Root mean squared error                  0.3855
+Relative absolute error                 48.8353 %
+Root relative squared error             77.0982 %
+Total Number of Instances             5404
 
-** class weka.classifiers.bayes.NaiveBayes Evaluation with Datasets **
+Confusion Matrix: [[1171.0, 605.0], [507.0, 3121.0]]
+Recall: 0.6593468468468469
+Precision: 0.6978545887961859
+F-Measure: 0.6780544296467864
 
-Correctly Classified Instances        2883               60.9901 %
-Incorrectly Classified Instances      1844               39.0099 %
-Kappa statistic                          0.2073
-Mean absolute error                      0.4126
-Root mean squared error                  0.5241
-Relative absolute error                 82.1423 %
-Root relative squared error            104.3431 %
-Total Number of Instances             4727
+- Logistic Regression:
 
-** class weka.classifiers.functions.Logistic Evaluation with Datasets ** (94655 instances)
+** class weka.classifiers.functions.Logistic Evaluation with Datasets: 95000 **
 
-Correctly Classified Instances        3658               77.4016 %
-Incorrectly Classified Instances      1068               22.5984 %
-Kappa statistic                          0.4692
-Mean absolute error                      0.3004
-Root mean squared error                  0.3976
-Relative absolute error                 59.7035 %
-Root relative squared error             79.0162 %
-Total Number of Instances             4726
+Correctly Classified Instances        4158               76.943  %
+Incorrectly Classified Instances      1246               23.057  %
+Kappa statistic                          0.4751
+Mean absolute error                      0.3057
+Root mean squared error                  0.3962
+Relative absolute error                 61.1432 %
+Root relative squared error             79.2314 %
+Total Number of Instances             5404
 
-** class weka.classifiers.trees.RandomForest Evaluation with Datasets ** (120000)
+Confusion Matrix: [[1137.0, 639.0], [607.0, 3021.0]]
+Recall: 0.6402027027027027
+Precision: 0.6519495412844036
+F-Measure: 0.6460227272727274
 
-Correctly Classified Instances        3567               75.4761 %
-Incorrectly Classified Instances      1159               24.5239 %
-Kappa statistic                          0.4524
-Mean absolute error                      0.4091
-Root mean squared error                  0.4297
-Relative absolute error                 81.3284 %
-Root relative squared error             85.4085 %
-Total Number of Instances             4726
+- Random Forest:
+** class weka.classifiers.trees.RandomForest Evaluation with Datasets: 120000 **
 
-** class weka.classifiers.functions.LibSVM Evaluation with Datasets **
+Correctly Classified Instances        4202               77.7572 %
+Incorrectly Classified Instances      1202               22.2428 %
+Kappa statistic                          0.4987
+Mean absolute error                      0.397
+Root mean squared error                  0.4196
+Relative absolute error                 79.4035 %
+Root relative squared error             83.9133 %
+Total Number of Instances             5404
 
-Correctly Classified Instances        3644               77.1054 %
-Incorrectly Classified Instances      1082               22.8946 %
-Kappa statistic                          0.4768
-Mean absolute error                      0.2289
-Root mean squared error                  0.4785
-Relative absolute error                 45.5221 %
-Root relative squared error             95.127  %
-Total Number of Instances             4726
+Confusion Matrix: [[1194.0, 582.0], [620.0, 3008.0]]
+Recall: 0.6722972972972973
+Precision: 0.6582138919514884
+F-Measure: 0.6651810584958218
+Zero Weights processed. Default weights will be used
 
-** Lexicon Method Evaluation **
+- Naive Bayes Gauss (word count):
+** class weka.classifiers.bayes.NaiveBayes Evaluation with Datasets: 1600000 **
 
+Correctly Classified Instances        3632               67.2095 %
+Incorrectly Classified Instances      1772               32.7905 %
+Kappa statistic                          0.2923
+Mean absolute error                      0.3736
+Root mean squared error                  0.4882
+Relative absolute error                 74.7217 %
+Root relative squared error             97.6301 %
+Total Number of Instances             5404
 
-Correctly classified instances:	        6855	 75.6873136800265%
-Incorrectly classified instances:	    2202	 24.3126863199735%
-Total number instances:	 9057
+Confusion Matrix: [[1064.0, 712.0], [1060.0, 2568.0]]
+Recall: 0.5990990990990991
+Precision: 0.5009416195856874
+F-Measure: 0.5456410256410257
 
+** class weka.classifiers.bayes.NaiveBayes Evaluation with Datasets: 1600000 ** Count?
 
-** NaiveBayesMultinomial **         filter.setOptions(new String[]{"-W", "15000", "-M", "10", "-dictionary", dictionary_path, "-L"});
+Correctly Classified Instances        3568               66.0252 %
+Incorrectly Classified Instances      1836               33.9748 %
+Kappa statistic                          0.2811
+Mean absolute error                      0.3882
+Root mean squared error                  0.4887
+Relative absolute error                 77.6442 %
+Root relative squared error             97.7483 %
+Total Number of Instances             5404
 
-Correctly Classified Instances        3718               78.6712 %
-Incorrectly Classified Instances      1008               21.3288 %
-Kappa statistic                          0.5119
-Mean absolute error                      0.2627
-Root mean squared error                  0.3906
-Relative absolute error                 52.2243 %
-Root relative squared error             77.618  %
-Total Number of Instances             4726
-
-** NaiveBayesMultinomial + LexiconMethod ** filter.setOptions(new String[]{"-W", "15000", "-M", "10", "-dictionary", dictionary_path, "-L"});
-Correctly Classified Instances        3806               80.5332 %
-Incorrectly Classified Instances       920               19.4668 %
-Kappa statistic                          0.5308
-Mean absolute error                      0.2502
-Root mean squared error                  0.3714
-Relative absolute error                 54.1702 %
-Root relative squared error             78.5574 %
-Total Number of Instances             4726
-
-** NaiveBayesMultinomial **         filter.setOptions(new String[]{"-W", "15000", "-M", "10", "-dictionary", dictionary_path, "-L", "-C"});
-
-Correctly Classified Instances        3689               78.0576 %
-Incorrectly Classified Instances      1037               21.9424 %
-Kappa statistic                          0.4948
-Mean absolute error                      0.2624
-Root mean squared error                  0.397
-Relative absolute error                 52.1598 %
-Root relative squared error             78.9026 %
-Total Number of Instances             4726
-
-** NaiveBayesMultinomial + LexiconMethod**         filter.setOptions(new String[]{"-W", "15000", "-M", "10", "-dictionary", dictionary_path, "-L", "-C"});
-
-
-Correctly Classified Instances        3801               80.4274 %
-Incorrectly Classified Instances       925               19.5726 %
-Kappa statistic                          0.5272
-Mean absolute error                      0.2485
-Root mean squared error                  0.3739
-Relative absolute error                 53.7918 %
-Root relative squared error             79.0944 %
-Total Number of Instances             4726
-
-
-
-
-
-
-
-
+Confusion Matrix: [[1105.0, 671.0], [1165.0, 2463.0]]
+Recall: 0.6221846846846847
+Precision: 0.486784140969163
+F-Measure: 0.5462184873949579
 
 

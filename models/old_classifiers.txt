@@ -1,0 +1,481 @@
+J48
+Correctly Classified Instances        2119               67.8949 %
+Incorrectly Classified Instances      1002               32.1051 %
+Kappa statistic                          0.2708
+Mean absolute error                      0.3622
+Root mean squared error                  0.4996
+Relative absolute error                 72.0128 %
+Root relative squared error             99.3321 %
+Total Number of Instances             3121
+
+** class weka.classifiers.bayes.NaiveBayes Evaluation with Datasets **
+
+Correctly Classified Instances        2883               60.9901 %
+Incorrectly Classified Instances      1844               39.0099 %
+Kappa statistic                          0.2073
+Mean absolute error                      0.4126
+Root mean squared error                  0.5241
+Relative absolute error                 82.1423 %
+Root relative squared error            104.3431 %
+Total Number of Instances             4727
+
+** class weka.classifiers.functions.Logistic Evaluation with Datasets ** (94655 instances)
+
+Correctly Classified Instances        3658               77.4016 %
+Incorrectly Classified Instances      1068               22.5984 %
+Kappa statistic                          0.4692
+Mean absolute error                      0.3004
+Root mean squared error                  0.3976
+Relative absolute error                 59.7035 %
+Root relative squared error             79.0162 %
+Total Number of Instances             4726
+
+** class weka.classifiers.trees.RandomForest Evaluation with Datasets ** (120000) (heap space)
+
+Correctly Classified Instances        3567               75.4761 %
+Incorrectly Classified Instances      1159               24.5239 %
+Kappa statistic                          0.4524
+Mean absolute error                      0.4091
+Root mean squared error                  0.4297
+Relative absolute error                 81.3284 %
+Root relative squared error             85.4085 %
+Total Number of Instances             4726
+
+** class weka.classifiers.functions.LibSVM Evaluation with Datasets **
+
+Correctly Classified Instances        3644               77.1054 %
+Incorrectly Classified Instances      1082               22.8946 %
+Kappa statistic                          0.4768
+Mean absolute error                      0.2289
+Root mean squared error                  0.4785
+Relative absolute error                 45.5221 %
+Root relative squared error             95.127  %
+Total Number of Instances             4726
+
+** Lexicon Method Evaluation **
+
+
+Correctly classified instances:	        6855	 75.6873136800265%
+Incorrectly classified instances:	    2202	 24.3126863199735%
+Total number instances:	 9057
+
+
+** NaiveBayesMultinomial **         filter.setOptions(new String[]{"-W", "15000", "-M", "10", "-dictionary", dictionary_path, "-L"});
+
+Correctly Classified Instances        3718               78.6712 %
+Incorrectly Classified Instances      1008               21.3288 %
+Kappa statistic                          0.5119
+Mean absolute error                      0.2627
+Root mean squared error                  0.3906
+Relative absolute error                 52.2243 %
+Root relative squared error             77.618  %
+Total Number of Instances             4726
+
+** NaiveBayesMultinomial + LexiconMethod ** filter.setOptions(new String[]{"-W", "15000", "-M", "10", "-dictionary", dictionary_path, "-L"});
+Correctly Classified Instances        3806               80.5332 %
+Incorrectly Classified Instances       920               19.4668 %
+Kappa statistic                          0.5308
+Mean absolute error                      0.2502
+Root mean squared error                  0.3714
+Relative absolute error                 54.1702 %
+Root relative squared error             78.5574 %
+Total Number of Instances             4726
+
+** NaiveBayesMultinomial **         filter.setOptions(new String[]{"-W", "15000", "-M", "10", "-dictionary", dictionary_path, "-L", "-C"});
+
+Correctly Classified Instances        3689               78.0576 %
+Incorrectly Classified Instances      1037               21.9424 %
+Kappa statistic                          0.4948
+Mean absolute error                      0.2624
+Root mean squared error                  0.397
+Relative absolute error                 52.1598 %
+Root relative squared error             78.9026 %
+Total Number of Instances             4726
+
+** NaiveBayesMultinomial + LexiconMethod**         filter.setOptions(new String[]{"-W", "15000", "-M", "10", "-dictionary", dictionary_path, "-L", "-C"});
+
+
+Correctly Classified Instances        3801               80.4274 %
+Incorrectly Classified Instances       925               19.5726 %
+Kappa statistic                          0.5272
+Mean absolute error                      0.2485
+Root mean squared error                  0.3739
+Relative absolute error                 53.7918 %
+Root relative squared error             79.0944 %
+Total Number of Instances             4726
+
+RandomForest /1200000
+Correctly Classified Instances        4225               78.1828 %
+Incorrectly Classified Instances      1179               21.8172 %
+Kappa statistic                          0.5067
+Mean absolute error                      0.4018
+Root mean squared error                  0.4208
+Relative absolute error                 80.3536 %
+Root relative squared error             84.1565 %
+Total Number of Instances             5404
+
+"C:\Program Files\Java\jdk-17.0.1\bin\java.exe" "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 2021.3\lib\idea_rt.jar=64325:C:\Program Files\JetBrains\IntelliJ IDEA 2021.3\bin" -Dfile.encoding=UTF-8 -classpath C:\Users\matte\Desktop\OTH\thesis_code\target\classes;C:\Users\matte\Downloads\libsvm.jar;C:\Users\matte\.m2\repository\org\apache\commons\commons-lang3\3.12.0\commons-lang3-3.12.0.jar;C:\Users\matte\.m2\repository\org\apache\httpcomponents\httpcore\4.4.15\httpcore-4.4.15.jar;C:\Users\matte\.m2\repository\org\apache\httpcomponents\httpclient\4.5.13\httpclient-4.5.13.jar;C:\Users\matte\.m2\repository\commons-logging\commons-logging\1.2\commons-logging-1.2.jar;C:\Users\matte\.m2\repository\commons-codec\commons-codec\1.11\commons-codec-1.11.jar;C:\Users\matte\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.13.1\jackson-core-2.13.1.jar;C:\Users\matte\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.13.1\jackson-databind-2.13.1.jar;C:\Users\matte\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.13.1\jackson-annotations-2.13.1.jar;C:\Users\matte\.m2\repository\org\hibernate\orm\hibernate-core\6.0.0.CR1\hibernate-core-6.0.0.CR1.jar;C:\Users\matte\.m2\repository\jakarta\persistence\jakarta.persistence-api\3.0.0\jakarta.persistence-api-3.0.0.jar;C:\Users\matte\.m2\repository\jakarta\transaction\jakarta.transaction-api\2.0.0\jakarta.transaction-api-2.0.0.jar;C:\Users\matte\.m2\repository\org\jboss\jandex\2.4.2.Final\jandex-2.4.2.Final.jar;C:\Users\matte\.m2\repository\com\fasterxml\classmate\1.5.1\classmate-1.5.1.jar;C:\Users\matte\.m2\repository\org\hibernate\common\hibernate-commons-annotations\6.0.0.CR1\hibernate-commons-annotations-6.0.0.CR1.jar;C:\Users\matte\.m2\repository\org\jboss\logging\jboss-logging\3.4.3.Final\jboss-logging-3.4.3.Final.jar;C:\Users\matte\.m2\repository\net\bytebuddy\byte-buddy\1.12.7\byte-buddy-1.12.7.jar;C:\Users\matte\.m2\repository\jakarta\activation\jakarta.activation-api\2.0.1\jakarta.activation-api-2.0.1.jar;C:\Users\matte\.m2\repository\jakarta\xml\bind\jakarta.xml.bind-api\3.0.1\jakarta.xml.bind-api-3.0.1.jar;C:\Users\matte\.m2\repository\com\sun\activation\jakarta.activation\2.0.1\jakarta.activation-2.0.1.jar;C:\Users\matte\.m2\repository\org\glassfish\jaxb\jaxb-runtime\3.0.2\jaxb-runtime-3.0.2.jar;C:\Users\matte\.m2\repository\org\glassfish\jaxb\jaxb-core\3.0.2\jaxb-core-3.0.2.jar;C:\Users\matte\.m2\repository\org\glassfish\jaxb\txw2\3.0.2\txw2-3.0.2.jar;C:\Users\matte\.m2\repository\jakarta\inject\jakarta.inject-api\2.0.0\jakarta.inject-api-2.0.0.jar;C:\Users\matte\.m2\repository\org\antlr\antlr4-runtime\4.9.1\antlr4-runtime-4.9.1.jar;C:\Users\matte\.m2\repository\mysql\mysql-connector-java\8.0.28\mysql-connector-java-8.0.28.jar;C:\Users\matte\.m2\repository\com\google\protobuf\protobuf-java\3.11.4\protobuf-java-3.11.4.jar;C:\Users\matte\.m2\repository\nz\ac\waikato\cms\weka\weka-dev\3.9.6\weka-dev-3.9.6.jar;C:\Users\matte\.m2\repository\com\github\vbmacher\java-cup\11b-20160615\java-cup-11b-20160615.jar;C:\Users\matte\.m2\repository\com\github\vbmacher\java-cup-runtime\11b-20160615\java-cup-runtime-11b-20160615.jar;C:\Users\matte\.m2\repository\nz\ac\waikato\cms\weka\thirdparty\bounce\0.18\bounce-0.18.jar;C:\Users\matte\.m2\repository\com\googlecode\matrix-toolkits-java\mtj\1.0.4\mtj-1.0.4.jar;C:\Users\matte\.m2\repository\com\github\fommil\netlib\netlib-native_ref-osx-x86_64\1.1\netlib-native_ref-osx-x86_64-1.1-natives.jar;C:\Users\matte\.m2\repository\com\github\fommil\netlib\native_ref-java\1.1\native_ref-java-1.1.jar;C:\Users\matte\.m2\repository\com\github\fommil\jniloader\1.1\jniloader-1.1.jar;C:\Users\matte\.m2\repository\com\github\fommil\netlib\netlib-native_ref-linux-x86_64\1.1\netlib-native_ref-linux-x86_64-1.1-natives.jar;C:\Users\matte\.m2\repository\com\github\fommil\netlib\netlib-native_ref-linux-i686\1.1\netlib-native_ref-linux-i686-1.1-natives.jar;C:\Users\matte\.m2\repository\com\github\fommil\netlib\netlib-native_ref-win-x86_64\1.1\netlib-native_ref-win-x86_64-1.1-natives.jar;C:\Users\matte\.m2\repository\com\github\fommil\netlib\netlib-native_ref-win-i686\1.1\netlib-native_ref-win-i686-1.1-natives.jar;C:\Users\matte\.m2\repository\com\github\fommil\netlib\netlib-native_ref-linux-armhf\1.1\netlib-native_ref-linux-armhf-1.1-natives.jar;C:\Users\matte\.m2\repository\com\github\fommil\netlib\netlib-native_system-osx-x86_64\1.1\netlib-native_system-osx-x86_64-1.1-natives.jar;C:\Users\matte\.m2\repository\com\github\fommil\netlib\native_system-java\1.1\native_system-java-1.1.jar;C:\Users\matte\.m2\repository\com\github\fommil\netlib\netlib-native_system-linux-x86_64\1.1\netlib-native_system-linux-x86_64-1.1-natives.jar;C:\Users\matte\.m2\repository\com\github\fommil\netlib\netlib-native_system-linux-i686\1.1\netlib-native_system-linux-i686-1.1-natives.jar;C:\Users\matte\.m2\repository\com\github\fommil\netlib\netlib-native_system-linux-armhf\1.1\netlib-native_system-linux-armhf-1.1-natives.jar;C:\Users\matte\.m2\repository\com\github\fommil\netlib\netlib-native_system-win-x86_64\1.1\netlib-native_system-win-x86_64-1.1-natives.jar;C:\Users\matte\.m2\repository\com\github\fommil\netlib\netlib-native_system-win-i686\1.1\netlib-native_system-win-i686-1.1-natives.jar;C:\Users\matte\.m2\repository\net\sourceforge\f2j\arpack_combined_all\0.1\arpack_combined_all-0.1.jar;C:\Users\matte\.m2\repository\com\googlecode\netlib-java\netlib-java\1.1\netlib-java-1.1.jar;C:\Users\matte\.m2\repository\com\github\fommil\netlib\core\1.1\core-1.1.jar;C:\Users\matte\.m2\repository\com\github\fracpete\jfilechooser-bookmarks\0.1.6\jfilechooser-bookmarks-0.1.6.jar;C:\Users\matte\.m2\repository\com\github\fracpete\jclipboardhelper\0.1.0\jclipboardhelper-0.1.0.jar;C:\Users\matte\.m2\repository\com\sun\istack\istack-commons-runtime\3.0.12\istack-commons-runtime-3.0.12.jar;C:\Users\matte\.m2\repository\com\formdev\flatlaf\2.0\flatlaf-2.0.jar;C:\Users\matte\.m2\repository\nz\ac\waikato\cms\weka\LibSVM\1.0.10\LibSVM-1.0.10.jar;C:\Users\matte\.m2\repository\tw\edu\ntu\csie\libsvm\3.25\libsvm-3.25.jar com.oth.thesis.SentimentAnalysis
+Mai 03, 2022 10:58:14 PM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate ORM core version 6.0.0.CR1
+Mai 03, 2022 10:58:14 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH10001002: Using built-in connection pool (not intended for production use)
+Mai 03, 2022 10:58:15 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001005: Loaded JDBC driver class: com.mysql.cj.jdbc.Driver
+Mai 03, 2022 10:58:15 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/analyzed_tweets]
+Mai 03, 2022 10:58:15 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001001: Connection properties: {password=****, user=root}
+Mai 03, 2022 10:58:15 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001003: Autocommit mode: false
+Mai 03, 2022 10:58:15 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections <init>
+INFO: HHH10001115: Connection pool size: 20 (min=1)
+Mai 03, 2022 10:58:15 PM org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl logSelectedDialect
+INFO: HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+Mai 03, 2022 10:58:15 PM org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl logSelectedDialect
+WARN: HHH90000026: MySQL5Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+Mai 03, 2022 10:58:16 PM org.hibernate.resource.transaction.backend.jdbc.internal.DdlTransactionIsolatorNonJtaImpl getIsolatedConnection
+INFO: HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@6a6c7f42] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+Mai 03, 2022 10:58:16 PM org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator initiateService
+INFO: HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+Test filtered Attributes: 2
+Test Instances: 5404
+Mai 03, 2022 10:58:20 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemARPACK
+Mai 03, 2022 10:58:20 PM com.github.fommil.jni.JniLoader liberalLoad
+INFO: successfully loaded C:\Users\matte\AppData\Local\Temp\jniloader15125516218282823513netlib-native_ref-win-x86_64.dll
+
+Correctly Classified Instances        3583               66.3027 %
+Incorrectly Classified Instances      1821               33.6973 %
+Kappa statistic                          0.2834
+Mean absolute error                      0.3862
+Root mean squared error                  0.4871
+Relative absolute error                 77.246  %
+Root relative squared error             97.4183 %
+Total Number of Instances             5404
+
+1.0,'?rt @justinbiebcr: bigger better..if know what mean ;) '
+1.0,'?rt @justinbiebcr: bigger better..if know what mean ;) '
+Class: 1.0, Distribution: [0.2769617418492559, 0.7230382581507441]
+1.0,'listening \"new age\" station @slackerradio ? '
+1.0,'listening \"new age\" station @slackerradio ? '
+Class: 1.0, Distribution: [0.15254438452818667, 0.8474556154718133]
+1.0,'didnt mean knee high ment lengt goes down knees ^-^ so cute love it! '
+1.0,'didnt mean knee high ment lengt goes down knees ^-^ so cute love it! '
+Class: 1.0, Distribution: [0.16786670128033668, 0.8321332987196632]
+1.0,'wana see vid kyan '
+1.0,'wana see vid kyan '
+Class: 1.0, Distribution: [0.23525069782169267, 0.7647493021783073]
+-1.0,'if mom went love of ray j or any reality show i\'d bee pissed . '
+-1.0,'if mom went love of ray j or any reality show i\'d bee pissed . '
+Class: 1.0, Distribution: [0.013444295516579583, 0.9865557044834204]
+1.0,'@mrhilton1985 welcome twitter xx '
+1.0,'@mrhilton1985 welcome twitter xx '
+Class: 1.0, Distribution: [0.2515197605384831, 0.748480239461517]
+1.0,'@kjbmusic oh yeah.. however, i\'d still like midst of though.. know.. '
+1.0,'@kjbmusic oh yeah.. however, i\'d still like midst of though.. know.. '
+Class: -1.0, Distribution: [0.6565921197247347, 0.3434078802752652]
+1.0,'need nice tea-drinking pic our tea club membership page anyone got one they\'d happy me use? '
+1.0,'need nice tea-drinking pic our tea club membership page anyone got one they\'d happy me use? '
+Class: -1.0, Distribution: [0.5659487775616405, 0.43405122243835953]
+1.0,'@jonathanrknight so twitpic lol, love home depot, love working w/my hands building things, dad was construction '
+1.0,'@jonathanrknight so twitpic lol, love home depot, love working w/my hands building things, dad was construction '
+Class: 1.0, Distribution: [0.17216307167878542, 0.8278369283212145]
+-1.0,'@barcough it\'s enough make sick, eh? there\'s nothing sacred anymore '
+-1.0,'@barcough it\'s enough make sick, eh? there\'s nothing sacred anymore '
+Class: -1.0, Distribution: [0.6590568888071475, 0.3409431111928525]
+1.0,'hacienda now level 80 time get epic gear her!! oh maybe some sleep would good.. '
+1.0,'hacienda now level 80 time get epic gear her!! oh maybe some sleep would good.. '
+Class: 1.0, Distribution: [0.0749705992661127, 0.9250294007338874]
+-1.0,'\"iran, with its unity god\'s grace, will punch arrogance (west) 22nd of bahman (feb 11) way that will leave them stunned,\" '
+-1.0,'\"iran, with its unity god\'s grace, will punch arrogance (west) 22nd of bahman (feb 11) way that will leave them stunned,\" '
+Class: 1.0, Distribution: [0.11762801685370532, 0.8823719831462946]
+-1.0,'4wordsonobamashand don\'t say n-word '
+-1.0,'4wordsonobamashand don\'t say n-word '
+Class: -1.0, Distribution: [0.9808208691571277, 0.019179130842872188]
+-1.0,'city watchdog chaos as chief executive hector sants resigns just months before general election '
+-1.0,'city watchdog chaos as chief executive hector sants resigns just months before general election '
+Class: 1.0, Distribution: [0.3315215040347987, 0.6684784959652014]
+1.0,'rt @mangauk: god big news day today! by popular demand, \"ah! goddess season 2\" will released 3 2-disc sets: may, jul, sep. '
+1.0,'rt @mangauk: god big news day today! by popular demand, \"ah! goddess season 2\" will released 3 2-disc sets: may, jul, sep. '
+Class: 1.0, Distribution: [0.11980905629598498, 0.880190943704015]
+1.0,'@russmarshalek sold! would love crazyass big sis -- how could say no?! cannot believe broke or minimally battered toe -- '
+1.0,'@russmarshalek sold! would love crazyass big sis -- how could say no?! cannot believe broke or minimally battered toe -- '
+Class: -1.0, Distribution: [0.5952275001979217, 0.40477249980207836]
+1.0,'@zzramesses yes; hope release that feature next month '
+1.0,'@zzramesses yes; hope release that feature next month '
+Class: 1.0, Distribution: [0.2233371471752624, 0.7766628528247377]
+-1.0,'need money! need new car!! jesus..somebody please buy old car :dd '
+-1.0,'need money! need new car!! jesus..somebody please buy old car :dd '
+Class: 1.0, Distribution: [0.28372296934590535, 0.7162770306540945]
+-1.0,'ny wif @djwallah heavy hitter crew.. shout @freddyphh looking real gay camera..lol.. '
+-1.0,'ny wif @djwallah heavy hitter crew.. shout @freddyphh looking real gay camera..lol.. '
+Class: 1.0, Distribution: [0.3075239201106222, 0.6924760798893778]
+1.0,'rt @rockingreensoap: flip(in) love @rockingreensoap! follow them win free flip camera! rt please!  clothdiapers '
+1.0,'rt @rockingreensoap: flip(in) love @rockingreensoap! follow them win free flip camera! rt please!  clothdiapers '
+Class: 1.0, Distribution: [0.015650428261688373, 0.9843495717383116]
+-1.0,'@shiedhao well damn! renee still aint playin, she?! neither jack!! @likasparody '
+-1.0,'@shiedhao well damn! renee still aint playin, she?! neither jack!! @likasparody '
+Class: -1.0, Distribution: [0.6401324008869094, 0.3598675991130906]
+-1.0,'@heydusti oh, geez, i\'d have lot more songs that way. '
+-1.0,'@heydusti oh, geez, i\'d have lot more songs that way. '
+Class: 1.0, Distribution: [0.4321014965081182, 0.5678985034918818]
+-1.0,'@wendywave1 hahahah that was worded weird. reading while candle burning room '
+-1.0,'@wendywave1 hahahah that was worded weird. reading while candle burning room '
+Class: 1.0, Distribution: [0.4987346885540168, 0.5012653114459833]
+-1.0,'insurance hospitals: wonder if there connection between hospital system overload format.. '
+-1.0,'insurance hospitals: wonder if there connection between hospital system overload format.. '
+Class: 1.0, Distribution: [0.33745587240147606, 0.662544127598524]
+-1.0,'chilling textin (?) .. much info..foreal know its los ward yung squad bitch.. '
+-1.0,'chilling textin (?) .. much info..foreal know its los ward yung squad bitch.. '
+Class: 1.0, Distribution: [0.3571055355971183, 0.6428944644028818]
+-1.0,'busy schedule might not leave lot of room today for.. more scorpio '
+-1.0,'busy schedule might not leave lot of room today for.. more scorpio '
+Class: -1.0, Distribution: [0.9087345103867915, 0.09126548961320848]
+1.0,'photo: (via fuckyeahkristinchenoweth) omgomgomgomg may 19th '
+1.0,'photo: (via fuckyeahkristinchenoweth) omgomgomgomg may 19th '
+Class: 1.0, Distribution: [0.31959283574350367, 0.6804071642564964]
+-1.0,'heres new idea,how get spoon so can read ass. '
+-1.0,'heres new idea,how get spoon so can read ass. '
+Class: 1.0, Distribution: [0.441521594089033, 0.5584784059109671]
+1.0,'rt @friendstvfan: retweetthisif want friendsthemovie via @lisa_kudrow '
+1.0,'rt @friendstvfan: retweetthisif want friendsthemovie via @lisa_kudrow '
+Class: -1.0, Distribution: [0.8174723941902173, 0.18252760580978267]
+-1.0,'andy rambling c&c morning shutup get with man '
+-1.0,'andy rambling c&c morning shutup get with man '
+Class: 1.0, Distribution: [0.2776629947065248, 0.7223370052934752]
+-1.0,'@tigerlilybubu lol, where you? once forgot car completely left home without it. '
+-1.0,'@tigerlilybubu lol, where you? once forgot car completely left home without it. '
+Class: 1.0, Distribution: [0.022542959508985595, 0.9774570404910145]
+-1.0,'@lsal92 yet minority .. despite election law being changed skew things aoun\'s favor, remain minority '
+-1.0,'@lsal92 yet minority .. despite election law being changed skew things aoun\'s favor, remain minority '
+Class: 1.0, Distribution: [0.3650567999333293, 0.6349432000666706]
+1.0,'newest member of __! yehbuddy '
+1.0,'newest member of __! yehbuddy '
+Class: 1.0, Distribution: [0.33732704714931616, 0.662672952850684]
+1.0,'@seananners hey adam, jpizzle1122 (the microwave dude utube) seems have good live stream mw2, maybe ask help? '
+1.0,'@seananners hey adam, jpizzle1122 (the microwave dude utube) seems have good live stream mw2, maybe ask help? '
+Class: 1.0, Distribution: [0.07157110472940738, 0.9284288952705926]
+1.0,'little caesars large cheese or pepperoni no limit 2/10 $3.99: '
+1.0,'little caesars large cheese or pepperoni no limit 2/10 $3.99: '
+Class: -1.0, Distribution: [0.9013244546176372, 0.09867554538236276]
+-1.0,'oh goodness emo '
+-1.0,'oh goodness emo '
+Class: 1.0, Distribution: [0.05480456034727038, 0.9451954396527296]
+-1.0,'@din_jee wait wait wait..im confused..are there? '
+-1.0,'@din_jee wait wait wait..im confused..are there? '
+Class: 1.0, Distribution: [0.37085849719764885, 0.6291415028023511]
+1.0,'rt @arranwhisky: new arran malt competition just posted on: ww.arranwhisky.com/default.aspx?page=competition free bottle chocolates '
+1.0,'rt @arranwhisky: new arran malt competition just posted on: ww.arranwhisky.com/default.aspx?page=competition free bottle chocolates '
+Class: 1.0, Distribution: [0.13368619308625113, 0.8663138069137489]
+-1.0,'emm, lip starting hurt :/ '
+-1.0,'emm, lip starting hurt :/ '
+Class: 1.0, Distribution: [0.4014729515649978, 0.5985270484350024]
+-1.0,'finally off work. gonna go home try sleep whatever off so can go other job. hate miss work '
+-1.0,'finally off work. gonna go home try sleep whatever off so can go other job. hate miss work '
+Class: -1.0, Distribution: [0.999786034571745, 2.1396542825513412E-4]
+-1.0,'ted travel off rocky start thanks wayward wallet. just made flight, but horridly tense. '
+-1.0,'ted travel off rocky start thanks wayward wallet. just made flight, but horridly tense. '
+Class: 1.0, Distribution: [0.06742656704840125, 0.9325734329515988]
+1.0,'rt 50+ awesome twitter tips become pro  via @virtuosoblogger '
+1.0,'rt 50+ awesome twitter tips become pro  via @virtuosoblogger '
+Class: 1.0, Distribution: [0.2378717387295636, 0.7621282612704363]
+1.0,'@jbieberboyy was thinking that wanna make cake party house :o! lol '
+1.0,'@jbieberboyy was thinking that wanna make cake party house :o! lol '
+Class: 1.0, Distribution: [0.22261303223738035, 0.7773869677626196]
+1.0,' check out! middle of london! so cool! '
+1.0,' check out! middle of london! so cool! '
+Class: 1.0, Distribution: [0.4547418715522914, 0.5452581284477086]
+1.0,'mountains, trees, beautiful cotton-ish blue sky! will fly! :) '
+1.0,'mountains, trees, beautiful cotton-ish blue sky! will fly! :) '
+Class: 1.0, Distribution: [0.1387552643993639, 0.8612447356006361]
+1.0,'@justinbieber follow me? please..(: great would make day. btw, wanna shampoo hair ;d lmao. 3 '
+1.0,'@justinbieber follow me? please..(: great would make day. btw, wanna shampoo hair ;d lmao. 3 '
+Class: 1.0, Distribution: [0.2274721084067137, 0.7725278915932863]
+1.0,'@darryltalley @j9talley hi there! nice see back! '
+1.0,'@darryltalley @j9talley hi there! nice see back! '
+Class: 1.0, Distribution: [0.4519739027430932, 0.5480260972569069]
+1.0,'rt @katyperry: ? new york! '
+1.0,'rt @katyperry: ? new york! '
+Class: 1.0, Distribution: [0.163160905026308, 0.836839094973692]
+1.0,'@aviemoron coffin has already been reshaped as it\'s going with me!! '
+1.0,'@aviemoron coffin has already been reshaped as it\'s going with me!! '
+Class: -1.0, Distribution: [0.5772962241727685, 0.4227037758272315]
+1.0,'went hot power yoga loved it. much better than bikram me. power good. hot good. sweat good. what\'s not love? stinky '
+1.0,'went hot power yoga loved it. much better than bikram me. power good. hot good. sweat good. what\'s not love? stinky '
+Class: 1.0, Distribution: [0.03566604181155743, 0.9643339581884426]
+Zero Weights processed. Default weights will be used
+
+Correctly Classified Instances        4224               78.1643 %
+Incorrectly Classified Instances      1180               21.8357 %
+Kappa statistic                          0.4962
+Mean absolute error                      0.2184
+Root mean squared error                  0.4673
+Relative absolute error                 43.6714 %
+Root relative squared error             93.4573 %
+Total Number of Instances             5404
+
+1.0,'?rt @justinbiebcr: bigger better..if know what mean ;) '
+1.0,'?rt @justinbiebcr: bigger better..if know what mean ;) '
+Class: 1.0, Distribution: [0.0, 1.0]
+1.0,'listening \"new age\" station @slackerradio ? '
+1.0,'listening \"new age\" station @slackerradio ? '
+Class: 1.0, Distribution: [0.0, 1.0]
+1.0,'didnt mean knee high ment lengt goes down knees ^-^ so cute love it! '
+1.0,'didnt mean knee high ment lengt goes down knees ^-^ so cute love it! '
+Class: -1.0, Distribution: [1.0, 0.0]
+1.0,'wana see vid kyan '
+1.0,'wana see vid kyan '
+Class: -1.0, Distribution: [1.0, 0.0]
+-1.0,'if mom went love of ray j or any reality show i\'d bee pissed . '
+-1.0,'if mom went love of ray j or any reality show i\'d bee pissed . '
+Class: 1.0, Distribution: [0.0, 1.0]
+1.0,'@mrhilton1985 welcome twitter xx '
+1.0,'@mrhilton1985 welcome twitter xx '
+Class: 1.0, Distribution: [0.0, 1.0]
+1.0,'@kjbmusic oh yeah.. however, i\'d still like midst of though.. know.. '
+1.0,'@kjbmusic oh yeah.. however, i\'d still like midst of though.. know.. '
+Class: 1.0, Distribution: [0.0, 1.0]
+1.0,'need nice tea-drinking pic our tea club membership page anyone got one they\'d happy me use? '
+1.0,'need nice tea-drinking pic our tea club membership page anyone got one they\'d happy me use? '
+Class: 1.0, Distribution: [0.0, 1.0]
+1.0,'@jonathanrknight so twitpic lol, love home depot, love working w/my hands building things, dad was construction '
+1.0,'@jonathanrknight so twitpic lol, love home depot, love working w/my hands building things, dad was construction '
+Class: 1.0, Distribution: [0.0, 1.0]
+-1.0,'@barcough it\'s enough make sick, eh? there\'s nothing sacred anymore '
+-1.0,'@barcough it\'s enough make sick, eh? there\'s nothing sacred anymore '
+Class: -1.0, Distribution: [1.0, 0.0]
+1.0,'hacienda now level 80 time get epic gear her!! oh maybe some sleep would good.. '
+1.0,'hacienda now level 80 time get epic gear her!! oh maybe some sleep would good.. '
+Class: 1.0, Distribution: [0.0, 1.0]
+-1.0,'\"iran, with its unity god\'s grace, will punch arrogance (west) 22nd of bahman (feb 11) way that will leave them stunned,\" '
+-1.0,'\"iran, with its unity god\'s grace, will punch arrogance (west) 22nd of bahman (feb 11) way that will leave them stunned,\" '
+Class: 1.0, Distribution: [0.0, 1.0]
+-1.0,'4wordsonobamashand don\'t say n-word '
+-1.0,'4wordsonobamashand don\'t say n-word '
+Class: 1.0, Distribution: [0.0, 1.0]
+-1.0,'city watchdog chaos as chief executive hector sants resigns just months before general election '
+-1.0,'city watchdog chaos as chief executive hector sants resigns just months before general election '
+Class: 1.0, Distribution: [0.0, 1.0]
+1.0,'rt @mangauk: god big news day today! by popular demand, \"ah! goddess season 2\" will released 3 2-disc sets: may, jul, sep. '
+1.0,'rt @mangauk: god big news day today! by popular demand, \"ah! goddess season 2\" will released 3 2-disc sets: may, jul, sep. '
+Class: 1.0, Distribution: [0.0, 1.0]
+1.0,'@russmarshalek sold! would love crazyass big sis -- how could say no?! cannot believe broke or minimally battered toe -- '
+1.0,'@russmarshalek sold! would love crazyass big sis -- how could say no?! cannot believe broke or minimally battered toe -- '
+Class: -1.0, Distribution: [1.0, 0.0]
+1.0,'@zzramesses yes; hope release that feature next month '
+1.0,'@zzramesses yes; hope release that feature next month '
+Class: 1.0, Distribution: [0.0, 1.0]
+-1.0,'need money! need new car!! jesus..somebody please buy old car :dd '
+-1.0,'need money! need new car!! jesus..somebody please buy old car :dd '
+Class: -1.0, Distribution: [1.0, 0.0]
+-1.0,'ny wif @djwallah heavy hitter crew.. shout @freddyphh looking real gay camera..lol.. '
+-1.0,'ny wif @djwallah heavy hitter crew.. shout @freddyphh looking real gay camera..lol.. '
+Class: 1.0, Distribution: [0.0, 1.0]
+1.0,'rt @rockingreensoap: flip(in) love @rockingreensoap! follow them win free flip camera! rt please!  clothdiapers '
+1.0,'rt @rockingreensoap: flip(in) love @rockingreensoap! follow them win free flip camera! rt please!  clothdiapers '
+Class: 1.0, Distribution: [0.0, 1.0]
+-1.0,'@shiedhao well damn! renee still aint playin, she?! neither jack!! @likasparody '
+-1.0,'@shiedhao well damn! renee still aint playin, she?! neither jack!! @likasparody '
+Class: -1.0, Distribution: [1.0, 0.0]
+-1.0,'@heydusti oh, geez, i\'d have lot more songs that way. '
+-1.0,'@heydusti oh, geez, i\'d have lot more songs that way. '
+Class: -1.0, Distribution: [1.0, 0.0]
+-1.0,'@wendywave1 hahahah that was worded weird. reading while candle burning room '
+-1.0,'@wendywave1 hahahah that was worded weird. reading while candle burning room '
+Class: 1.0, Distribution: [0.0, 1.0]
+-1.0,'insurance hospitals: wonder if there connection between hospital system overload format.. '
+-1.0,'insurance hospitals: wonder if there connection between hospital system overload format.. '
+Class: -1.0, Distribution: [1.0, 0.0]
+-1.0,'chilling textin (?) .. much info..foreal know its los ward yung squad bitch.. '
+-1.0,'chilling textin (?) .. much info..foreal know its los ward yung squad bitch.. '
+Class: 1.0, Distribution: [0.0, 1.0]
+-1.0,'busy schedule might not leave lot of room today for.. more scorpio '
+-1.0,'busy schedule might not leave lot of room today for.. more scorpio '
+Class: -1.0, Distribution: [1.0, 0.0]
+1.0,'photo: (via fuckyeahkristinchenoweth) omgomgomgomg may 19th '
+1.0,'photo: (via fuckyeahkristinchenoweth) omgomgomgomg may 19th '
+Class: 1.0, Distribution: [0.0, 1.0]
+-1.0,'heres new idea,how get spoon so can read ass. '
+-1.0,'heres new idea,how get spoon so can read ass. '
+Class: 1.0, Distribution: [0.0, 1.0]
+1.0,'rt @friendstvfan: retweetthisif want friendsthemovie via @lisa_kudrow '
+1.0,'rt @friendstvfan: retweetthisif want friendsthemovie via @lisa_kudrow '
+Class: 1.0, Distribution: [0.0, 1.0]
+-1.0,'andy rambling c&c morning shutup get with man '
+-1.0,'andy rambling c&c morning shutup get with man '
+Class: 1.0, Distribution: [0.0, 1.0]
+-1.0,'@tigerlilybubu lol, where you? once forgot car completely left home without it. '
+-1.0,'@tigerlilybubu lol, where you? once forgot car completely left home without it. '
+Class: -1.0, Distribution: [1.0, 0.0]
+-1.0,'@lsal92 yet minority .. despite election law being changed skew things aoun\'s favor, remain minority '
+-1.0,'@lsal92 yet minority .. despite election law being changed skew things aoun\'s favor, remain minority '
+Class: -1.0, Distribution: [1.0, 0.0]
+1.0,'newest member of __! yehbuddy '
+1.0,'newest member of __! yehbuddy '
+Class: 1.0, Distribution: [0.0, 1.0]
+1.0,'@seananners hey adam, jpizzle1122 (the microwave dude utube) seems have good live stream mw2, maybe ask help? '
+1.0,'@seananners hey adam, jpizzle1122 (the microwave dude utube) seems have good live stream mw2, maybe ask help? '
+Class: 1.0, Distribution: [0.0, 1.0]
+1.0,'little caesars large cheese or pepperoni no limit 2/10 $3.99: '
+1.0,'little caesars large cheese or pepperoni no limit 2/10 $3.99: '
+Class: -1.0, Distribution: [1.0, 0.0]
+-1.0,'oh goodness emo '
+-1.0,'oh goodness emo '
+Class: 1.0, Distribution: [0.0, 1.0]
+-1.0,'@din_jee wait wait wait..im confused..are there? '
+-1.0,'@din_jee wait wait wait..im confused..are there? '
+Class: 1.0, Distribution: [0.0, 1.0]
+1.0,'rt @arranwhisky: new arran malt competition just posted on: ww.arranwhisky.com/default.aspx?page=competition free bottle chocolates '
+1.0,'rt @arranwhisky: new arran malt competition just posted on: ww.arranwhisky.com/default.aspx?page=competition free bottle chocolates '
+Class: 1.0, Distribution: [0.0, 1.0]
+-1.0,'emm, lip starting hurt :/ '
+-1.0,'emm, lip starting hurt :/ '
+Class: -1.0, Distribution: [1.0, 0.0]
+-1.0,'finally off work. gonna go home try sleep whatever off so can go other job. hate miss work '
+-1.0,'finally off work. gonna go home try sleep whatever off so can go other job. hate miss work '
+Class: -1.0, Distribution: [1.0, 0.0]
+-1.0,'ted travel off rocky start thanks wayward wallet. just made flight, but horridly tense. '
+-1.0,'ted travel off rocky start thanks wayward wallet. just made flight, but horridly tense. '
+Class: 1.0, Distribution: [0.0, 1.0]
+1.0,'rt 50+ awesome twitter tips become pro  via @virtuosoblogger '
+1.0,'rt 50+ awesome twitter tips become pro  via @virtuosoblogger '
+Class: 1.0, Distribution: [0.0, 1.0]
+1.0,'@jbieberboyy was thinking that wanna make cake party house :o! lol '
+1.0,'@jbieberboyy was thinking that wanna make cake party house :o! lol '
+Class: 1.0, Distribution: [0.0, 1.0]
+1.0,' check out! middle of london! so cool! '
+1.0,' check out! middle of london! so cool! '
+Class: 1.0, Distribution: [0.0, 1.0]
+1.0,'mountains, trees, beautiful cotton-ish blue sky! will fly! :) '
+1.0,'mountains, trees, beautiful cotton-ish blue sky! will fly! :) '
+Class: 1.0, Distribution: [0.0, 1.0]
+1.0,'@justinbieber follow me? please..(: great would make day. btw, wanna shampoo hair ;d lmao. 3 '
+1.0,'@justinbieber follow me? please..(: great would make day. btw, wanna shampoo hair ;d lmao. 3 '
+Class: 1.0, Distribution: [0.0, 1.0]
+1.0,'@darryltalley @j9talley hi there! nice see back! '
+1.0,'@darryltalley @j9talley hi there! nice see back! '
+Class: 1.0, Distribution: [0.0, 1.0]
+1.0,'rt @katyperry: ? new york! '
+1.0,'rt @katyperry: ? new york! '
+Class: 1.0, Distribution: [0.0, 1.0]
+1.0,'@aviemoron coffin has already been reshaped as it\'s going with me!! '
+1.0,'@aviemoron coffin has already been reshaped as it\'s going with me!! '
+Class: -1.0, Distribution: [1.0, 0.0]
+1.0,'went hot power yoga loved it. much better than bikram me. power good. hot good. sweat good. what\'s not love? stinky '
+1.0,'went hot power yoga loved it. much better than bikram me. power good. hot good. sweat good. what\'s not love? stinky '
+Class: -1.0, Distribution: [1.0, 0.0]
+Test filtered Attributes: 2
+Test Instances: 5404
+
+Process finished with exit code 0
+    NB + RF
+
+
+
+
+
+
+
+
+
+

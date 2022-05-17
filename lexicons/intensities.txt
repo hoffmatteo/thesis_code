@@ -29,3 +29,12 @@ utterly,2.0
 very,2.5
 scarcely,0.5
 barely,0.1
+abit,0.8
+awfully,1.5
+breathtakingly,2.0
+considerably,1.4
+exceedingly,1.8
+excessively,1.9
+fucking,2.5
+impossibly,3.5
+

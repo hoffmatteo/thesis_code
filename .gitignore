@@ -185,6 +185,8 @@ $RECYCLE.BIN/
 /data/training.1600000.processed.noemoticon.csv
 /models/nbmultitext.model
 /models/forest2.model
-/models/forest.model
+/models/maximum/forest.model
 
 /models/forestdelete.model
+/data/traindataFiltered.arff
+/data/traindata.arff

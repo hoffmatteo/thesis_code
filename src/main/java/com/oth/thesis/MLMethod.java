@@ -1,8 +1,11 @@
 package com.oth.thesis;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.oth.thesis.database.CaseStudyTweet;
 import com.oth.thesis.database.TrainingTweet;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import weka.attributeSelection.ClassifierAttributeEval;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayesMultinomial;
@@ -16,32 +19,34 @@ import weka.core.Instances;
 import weka.core.SerializationHelper;
 import weka.core.converters.ArffLoader;
 import weka.core.converters.ConverterUtils;
+import weka.core.stemmers.LovinsStemmer;
+import weka.core.tokenizers.NGramTokenizer;
+import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.StringToWordVector;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class MLMethod {
     public static final String test_arff_nominal = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\testTweetsNominal.arff";
-    public static final String test_arff_numeric = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\testTweetsNumeric.arff";
     public static final String test_arff_nominal_method3 = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\testTweetsNominalMethod3.arff";
     public static final String test_arff_nominal_method32 = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\testTweetsNominalMethod32.arff";
-
-    public static String nb_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\nbmultingram.model";
-    private static final String j48_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\j48.model";
-    private static final String logistic_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\logistic2.model";
-    private static final String svm_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\svm.model";
-    private static final String forest_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\forestdelete.model";
-    private static final String linear_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\linear.model";
+    public static String nb_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\maximum\\nbmultingram.model";
+    private static final String logistic_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\maximum\\logistic.model";
+    private static final String svm_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\maximum\\svm.model";
+    private static final String forest_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\maximum\\forest.model";
     public static final String training_path = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\training.1600000.processed.noemoticon.csv";
     private static final String dictionary_path = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\dictionary.txt";
+    private static final String filteredWordsPath = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\lexicons\\filteredWords.txt";
+    //private static final String trainDataPath = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\traindata_count.arff";
+    private static final String trainDataPath = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\traindata.arff";
+
+
     private LexiconMethod lexiconMethod;
     public boolean isLexiconMethod = false;
     public boolean isLexiconMethod2 = false;
@@ -58,13 +63,61 @@ public class MLMethod {
     public MLMethod(SessionFactory sessionFactory) throws Exception {
         this.sessionFactory = sessionFactory;
         init();
+        //caseStudy();
+        //buildArffTrain(true);
         runNaiveBayes();
-        //runLogisticRegression();
-        //runLinearRegression();
-        //runRandomForest();
-        //runSVM();
-        //runJ48();
+        //runLogisticRegression(95000);
+        //runRandomForest(120000);
+        //runSVM(120000);
+
     }
+
+    public void caseStudy() throws Exception {
+        Instances data = buildArff("CaseStudyTweets", true);
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        List<CaseStudyTweet> result = session.createQuery("from CaseStudyTweet", CaseStudyTweet.class).list();
+        AtomicInteger counterPositive = new AtomicInteger(0);
+        AtomicInteger counterNegative = new AtomicInteger(0);
+        FilteredClassifier classifier = (FilteredClassifier) SerializationHelper.read(nb_file);
+
+
+        for (int i = 0; i < result.size(); i++) {
+            Date date = new Date(1652655600000L);
+            if (
+                    result.get(i).getCreated_at().after(new Date(1652655600000L)) &&
+                            Objects.equals(result.get(i).getTopic(), "devin booker")) {
+                double[] vals = new double[data.numAttributes()];
+                String text = result.get(i).getText().toLowerCase(Locale.ROOT);
+                text = preprocess(text);
+                vals[1] = data.attribute(1).addStringValue(text);
+                data.add(new DenseInstance(1.0, vals));
+                data.setClassIndex(0);
+                //System.out.println(text);
+            }
+        }
+
+        for (int i = 0; i < data.numInstances(); i++) {
+            try {
+                double index = classifier.classifyInstance(data.instance(i));
+                String className = data.instance(i).attribute(0).value((int) index);
+                if (Objects.equals(className, "1.0")) {
+
+                    counterPositive.incrementAndGet();
+                } else {
+                    counterNegative.incrementAndGet();
+                }
+                System.out.println(className + " " + result.get(i).getText());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println(counterPositive.get());
+        System.out.println(counterNegative.get());
+
+    }
+
 
     public MLMethod(SessionFactory sessionFactory, LexiconMethod lexiconMethod) throws Exception {
         this.sessionFactory = sessionFactory;
@@ -76,54 +129,55 @@ public class MLMethod {
 
 
         init();
-        runNaiveBayes();
+        //runNaiveBayes();
         //runLogisticRegression();
-        //runLinearRegression();
         //runRandomForest();
         //runSVM();
-        //runJ48();
     }
 
     private void init() throws Exception {
         filter.setLowerCaseTokens(true);
         filter.setDoNotOperateOnPerClassBasis(true);
-        filter.setOptions(new String[]{"-W", "15000", "-M", "15", "-dictionary", dictionary_path, "-L"});
+        filter.setOptions(new String[]{"-W", "15000", "-M", "20", "-dictionary", dictionary_path, "-L"});
+        NGramTokenizer tokenizer = new NGramTokenizer();
+        tokenizer.setNGramMinSize(1);
+        tokenizer.setNGramMaxSize(2);
+        filter.setTokenizer(tokenizer);
+        filter.setStemmer(new LovinsStemmer());
 
-
-        buildInstancesTrain(true);
-        //buildInstancesTrainSource2(true);
-        buildArffTest(true);
         buildInstancesTest(true);
+
 
     }
 
     public void runNaiveBayes() throws Exception {
-        boolean nominal = true;
-        //buildInstancesTrain(nominal);
-        //buildArffTest(nominal);
-        //buildInstancesTest(nominal);
-        //NaiveBayes nb = new NaiveBayes();
-        NaiveBayesMultinomial nb = new NaiveBayesMultinomial();
+        buildInstancesTrain(true, 0);
 
-        train(nb, nb_file);
+        boolean nominal = true;
+        NaiveBayesMultinomial nb = new NaiveBayesMultinomial();
+        //NaiveBayes nb = new NaiveBayes();
+        //nb.setOptions(new String[]{"-K", ""});
+
+        //train(nb, nb_file);
         test(nb_file, nominal);
     }
 
-    public void runLogisticRegression() throws Exception {
+    public void runLogisticRegression(int limit) throws Exception {
         boolean nominal = true;
-        buildInstancesTrain(nominal);
-        //buildArffTest(nominal);
-        buildInstancesTest(nominal);
+        buildInstancesTrain(true, limit);
+
         Logistic log = new Logistic();
         log.setOptions(new String[]{"-S", "-M", "10"});
 
-        train(log, logistic_file);
+        //train(log, logistic_file);
         test(logistic_file, nominal);
 
     }
 
-    public void runSVM() throws Exception {
+    public void runSVM(int limit) throws Exception {
         boolean nominal = true;
+        buildInstancesTrain(true, limit);
+
         //buildInstancesTrain(nominal);
         //buildArffTest(nominal);
         //buildInstancesTest(nominal);
@@ -131,48 +185,26 @@ public class MLMethod {
         //linear
         svm.setOptions(new String[]{"-K", "0"});
 
-        train(svm, svm_file);
+        //train(svm, svm_file);
         test(svm_file, nominal);
 
     }
 
-    public void runRandomForest() throws Exception {
+    public void runRandomForest(int limit) throws Exception {
+        buildInstancesTrain(true, limit);
+
         boolean nominal = true;
-        buildInstancesTrain(nominal);
-        //buildArffTest(nominal);
-        buildInstancesTest(nominal);
         RandomForest forest = new RandomForest();
-        forest.setOptions(new String[]{"-depth", "300", "-print", ""});
-        train(forest, forest_file);
+        forest.setOptions(new String[]{"-depth", "300"});
+        //train(forest, forest_file);
         test(forest_file, nominal);
 
     }
-
-    public void runLinearRegression() throws Exception {
-        boolean nominal = false;
-        buildInstancesTrain(nominal);
-        //buildArffTest(nominal);
-        buildInstancesTest(nominal);
-        //train(new LinearRegression(), linear_file);
-        test(linear_file, nominal);
-
-    }
-
-    public void runJ48() throws Exception {
-        boolean nominal = true;
-        buildInstancesTrain(nominal);
-        //buildArffTest(nominal);
-        buildInstancesTest(nominal);
-        //train(new NaiveBayes(), j48_file);
-        test(j48_file, nominal);
-    }
-
 
     public void test(String modelFile, boolean nominal) throws Exception {
         FilteredClassifier classifier = (FilteredClassifier) SerializationHelper.read(modelFile);
         evaluate(classifier, nominal);
 
-        /*
 
         ClassifierAttributeEval attributeEval = new ClassifierAttributeEval();
         attributeEval.setClassifier(classifier.getClassifier());
@@ -205,7 +237,7 @@ public class MLMethod {
             System.out.println(entry.getKey() + "; " + entry.getValue());
         }
 
-         */
+
     }
 
 
@@ -217,36 +249,27 @@ public class MLMethod {
 
         filteredClassifier.buildClassifier(trainingData);
 
-        /*
-        for (int i = 0; i < trainingData.numInstances(); i++) {
-            System.out.println(trainingData.instance(i));
-            System.out.println(test.instance(i));
-        }
-
-         */
-
-
         weka.core.SerializationHelper.write(modelFile, filteredClassifier);
 
 
     }
 
-    public void evaluate(Classifier classifier, boolean nominal) throws Exception {
+    public void evaluate(FilteredClassifier classifier, boolean nominal) throws Exception {
         Evaluation eval = new Evaluation(trainingData);
-
-        //System.out.println(classifier);
 
 
         eval.evaluateModel(classifier, testData);
 
-        //System.out.println("** " + classifier.getClassifier().getClass() + " Evaluation with Datasets **");
+        System.out.println("** " + classifier.getClassifier().getClass() + " Evaluation with Datasets: " + trainingData.numInstances() + " **");
+
         System.out.println(eval.toSummaryString());
+        /*
         for (int i = 0; i < 50; i++) {
             //System.out.println(testData.instance(i));
             System.out.println(unfilteredTestData.instance(i));
+            System.out.println(testData.instance(i));
 
             double result = classifier.classifyInstance(testData.instance(i));
-            //System.out.println("Index: " + index);
             String className;
             if (nominal) {
                 className = trainingData.attribute(0).value((int) result);
@@ -258,6 +281,15 @@ public class MLMethod {
             System.out.println(Arrays.toString(distribution));
 
         }
+
+         */
+
+        System.out.println("Confusion Matrix: " + Arrays.deepToString(eval.confusionMatrix()));
+        System.out.println("Recall: " + eval.recall(1));
+        System.out.println("Precision: " + eval.precision(1));
+        System.out.println("F-Measure: " + eval.fMeasure(1));
+
+
         //System.out.println(classifier);
 
     }
@@ -268,20 +300,33 @@ public class MLMethod {
             f = new File(test_arff_nominal_method3);
         } else if (isLexiconMethod2) {
             f = new File(test_arff_nominal_method32);
-        } else if (nominal) {
-            f = new File(test_arff_nominal);
         } else {
-            f = new File(test_arff_numeric);
+            f = new File(test_arff_nominal);
         }
-
         if (f.exists()) {
             ArffLoader loader = new ArffLoader();
             loader.setSource(f);
             Instances data = loader.getDataSet();
             data.setClassIndex(0);
-            unfilteredTestData = data;
+
+            Instances subGroup = new Instances(data, data.numInstances());
+            int negativeCounter = 0;
+            int positiveCounter = 0;
+
+            for (int i = 0; i < data.numInstances(); i++) {
+                if (data.instance(i).classValue() == 1.0) {
+                    if (positiveCounter < 1776) {
+                        subGroup.add(data.instance(i));
+                        positiveCounter++;
+                    }
+                } else {
+                    subGroup.add(data.instance(i));
+                }
+            }
+            unfilteredTestData = subGroup;
 
             testData = unfilteredTestData;
+
             System.out.println("Test filtered Attributes: " + testData.numAttributes());
             System.out.println("Test Instances: " + testData.numInstances());
 
@@ -307,7 +352,9 @@ public class MLMethod {
             } else {
                 vals[0] = tweet.getScore();
             }
-            vals[1] = data.attribute(1).addStringValue(tweet.getText());
+            String text = tweet.getText().toLowerCase(Locale.ROOT);
+            text = preprocess(text);
+            vals[1] = data.attribute(1).addStringValue(text);
 
             if (isLexiconMethod) {
                 double score = lexiconMethod.analyzeTweet(tweet.getText(), true) + 2;
@@ -332,8 +379,6 @@ public class MLMethod {
 
             } else if (nominal) {
                 ConverterUtils.DataSink.write(test_arff_nominal, data);
-            } else {
-                ConverterUtils.DataSink.write(test_arff_numeric, data);
             }
 
         } catch (Exception e) {
@@ -368,8 +413,7 @@ public class MLMethod {
         return data;
     }
 
-
-    private void buildInstancesTrain(boolean nominal) throws Exception {
+    private void buildArffTrain(boolean nominal) throws Exception {
         Instances trainData = buildArff("TrainingData", nominal);
         AtomicInteger counter = new AtomicInteger(0);
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(training_path), StandardCharsets.UTF_8));
@@ -377,9 +421,6 @@ public class MLMethod {
         AtomicInteger counterNegative = new AtomicInteger(0);
 
         reader.lines().forEach(line -> {
-            if (counter.incrementAndGet() % 2 != 0) {
-                //return;
-            }
             String[] components = line.split("\",\"");
             if (components.length == 6) {
                 for (int i = 0; i < components.length; i++) {
@@ -409,8 +450,8 @@ public class MLMethod {
                 } else {
                     vals[0] = score;
                 }
+                text = preprocess(text);
 
-                text = text.replaceAll("\"", "");
                 vals[1] = trainData.attribute(1).addStringValue(text);
 
                 if (isLexiconMethod) {
@@ -432,7 +473,88 @@ public class MLMethod {
         System.out.println("Training: " + counterNegative.get() + " negative tweets");
 
         trainData.setClassIndex(0);
+        ConverterUtils.DataSink.write(trainDataPath, trainData);
         trainingData = trainData;
+
+    }
+
+
+    private void buildInstancesTrain(boolean nominal, int limit) throws Exception {
+
+        ArffLoader loader = new ArffLoader();
+        loader.setSource(new File(trainDataPath));
+        Instances data = loader.getDataSet();
+        data.setClassIndex(0);
+        trainingData = data;
+        if (limit != 0) {
+            int positiveInstances = 0;
+            int negativeInstances = 0;
+            Instances subsetData = new Instances(data, data.numInstances());
+            for (int i = 0; i < data.numInstances(); i++) {
+                if (data.instance(i).classValue() == 1.0) {
+                    if (positiveInstances >= limit / 2) {
+                        continue;
+                    }
+                    positiveInstances++;
+                } else {
+                    if (negativeInstances >= limit / 2) {
+                        continue;
+                    }
+                    negativeInstances++;
+                }
+                subsetData.add(data.instance(i));
+
+            }
+            trainingData = subsetData;
+        }
+
+
+    }
+
+    private String preprocess(String tweet) {
+        List<String> filteredWords = new ArrayList<>();
+        try {
+            Files.lines(Path.of(filteredWordsPath)).forEach(filteredWords::add);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        tweet = tweet.toLowerCase(Locale.ROOT);
+        tweet = tweet.replaceAll("http://[\\S]+|https://[\\S]+", "");
+        String[] words = tweet.split(" ");
+        StringBuilder sb = new StringBuilder();
+        for (String word : words) {
+            word = word.replaceAll("(&amp)|(&quot)|(#)", "");
+            word = removeTripleChar(word);
+            if (!filteredWords.contains(word)) {
+                sb.append(word).append(" ");
+            }
+        }
+        return sb.toString();
+    }
+
+    private String removeTripleChar(String word) {
+        StringBuilder sb = new StringBuilder();
+        if (word.length() >= 1) {
+            char previousChar = word.charAt(0);
+            int count = 1;
+            sb.append(previousChar);
+
+            for (int i = 1; i < word.length(); i++) {
+                char c = word.charAt(i);
+                if (previousChar == c) {
+                    count++; //
+                    if (count < 3) {
+                        sb.append(c);
+                    }
+                } else {
+                    sb.append(c);
+                    count = 1;
+                }
+                previousChar = c;
+            }
+        }
+        return sb.toString();
+
     }
 
     private void buildInstancesTrainSource2(boolean nominal) throws Exception {
