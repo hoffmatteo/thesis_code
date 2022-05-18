@@ -1,11 +1,9 @@
 package com.oth.thesis;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.oth.thesis.database.CaseStudyTweet;
 import com.oth.thesis.database.TrainingTweet;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import weka.attributeSelection.ClassifierAttributeEval;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayesMultinomial;
@@ -21,7 +19,6 @@ import weka.core.converters.ArffLoader;
 import weka.core.converters.ConverterUtils;
 import weka.core.stemmers.LovinsStemmer;
 import weka.core.tokenizers.NGramTokenizer;
-import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.StringToWordVector;
 
 import java.io.*;
@@ -30,7 +27,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 public class MLMethod {
     public static final String test_arff_nominal = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\testTweetsNominal.arff";
@@ -44,7 +40,7 @@ public class MLMethod {
     private static final String dictionary_path = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\dictionary.txt";
     private static final String filteredWordsPath = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\lexicons\\filteredWords.txt";
     //private static final String trainDataPath = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\traindata_count.arff";
-    private static final String trainDataPath = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\traindata.arff";
+    private static String trainDataPath = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\traindata.arff";
 
 
     private LexiconMethod lexiconMethod;
@@ -72,64 +68,23 @@ public class MLMethod {
 
     }
 
-    public void caseStudy() throws Exception {
-        Instances data = buildArff("CaseStudyTweets", true);
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        List<CaseStudyTweet> result = session.createQuery("from CaseStudyTweet", CaseStudyTweet.class).list();
-        AtomicInteger counterPositive = new AtomicInteger(0);
-        AtomicInteger counterNegative = new AtomicInteger(0);
-        FilteredClassifier classifier = (FilteredClassifier) SerializationHelper.read(nb_file);
-
-
-        for (int i = 0; i < result.size(); i++) {
-            Date date = new Date(1652655600000L);
-            if (
-                    result.get(i).getCreated_at().after(new Date(1652655600000L)) &&
-                            Objects.equals(result.get(i).getTopic(), "devin booker")) {
-                double[] vals = new double[data.numAttributes()];
-                String text = result.get(i).getText().toLowerCase(Locale.ROOT);
-                text = preprocess(text);
-                vals[1] = data.attribute(1).addStringValue(text);
-                data.add(new DenseInstance(1.0, vals));
-                data.setClassIndex(0);
-                //System.out.println(text);
-            }
-        }
-
-        for (int i = 0; i < data.numInstances(); i++) {
-            try {
-                double index = classifier.classifyInstance(data.instance(i));
-                String className = data.instance(i).attribute(0).value((int) index);
-                if (Objects.equals(className, "1.0")) {
-
-                    counterPositive.incrementAndGet();
-                } else {
-                    counterNegative.incrementAndGet();
-                }
-                System.out.println(className + " " + result.get(i).getText());
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        System.out.println(counterPositive.get());
-        System.out.println(counterNegative.get());
-
-    }
-
 
     public MLMethod(SessionFactory sessionFactory, LexiconMethod lexiconMethod) throws Exception {
         this.sessionFactory = sessionFactory;
 
-        //isLexiconMethod = true;
-        isLexiconMethod2 = true;
+        isLexiconMethod = true;
+        //isLexiconMethod2 = true;
         this.lexiconMethod = lexiconMethod;
-        nb_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\nbmultimethod3.model";
+        nb_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\hybrid\\nbMethod1.model";
+        trainDataPath = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\traindataHybridMethod1.arff";
+        buildArffTrain(true);
+        buildArffTest(true);
 
 
         init();
-        //runNaiveBayes();
+
+
+        runNaiveBayes();
         //runLogisticRegression();
         //runRandomForest();
         //runSVM();
@@ -158,7 +113,7 @@ public class MLMethod {
         //NaiveBayes nb = new NaiveBayes();
         //nb.setOptions(new String[]{"-K", ""});
 
-        //train(nb, nb_file);
+        train(nb, nb_file);
         test(nb_file, nominal);
     }
 
@@ -205,6 +160,8 @@ public class MLMethod {
         FilteredClassifier classifier = (FilteredClassifier) SerializationHelper.read(modelFile);
         evaluate(classifier, nominal);
 
+        /*
+
 
         ClassifierAttributeEval attributeEval = new ClassifierAttributeEval();
         attributeEval.setClassifier(classifier.getClassifier());
@@ -236,6 +193,8 @@ public class MLMethod {
         for (Map.Entry<String, Double> entry : result.entrySet()) {
             System.out.println(entry.getKey() + "; " + entry.getValue());
         }
+
+         */
 
 
     }
@@ -298,8 +257,6 @@ public class MLMethod {
         File f;
         if (isLexiconMethod) {
             f = new File(test_arff_nominal_method3);
-        } else if (isLexiconMethod2) {
-            f = new File(test_arff_nominal_method32);
         } else {
             f = new File(test_arff_nominal);
         }
@@ -308,6 +265,9 @@ public class MLMethod {
             loader.setSource(f);
             Instances data = loader.getDataSet();
             data.setClassIndex(0);
+            unfilteredTestData = data;
+
+            /*
 
             Instances subGroup = new Instances(data, data.numInstances());
             int negativeCounter = 0;
@@ -324,6 +284,8 @@ public class MLMethod {
                 }
             }
             unfilteredTestData = subGroup;
+
+             */
 
             testData = unfilteredTestData;
 
@@ -357,10 +319,13 @@ public class MLMethod {
             vals[1] = data.attribute(1).addStringValue(text);
 
             if (isLexiconMethod) {
-                double score = lexiconMethod.analyzeTweet(tweet.getText(), true) + 2;
-                if (score <= 0.0) {
-                    System.out.println("HERE");
+                double score = lexiconMethod.analyzeTweet(tweet.getText(), false);
+                if (score < -10) {
+                    score = -10;
+                } else if (score > 10) {
+                    score = 10;
                 }
+                score += 10;
 
                 vals[2] = score;
             }
@@ -438,34 +403,38 @@ public class MLMethod {
                 String text = components[5];
                 double[] vals = new double[trainData.numAttributes()];
                 if (nominal) {
+
                     if (isLexiconMethod2) {
                         double lexiconScore = lexiconMethod.analyzeTweet(text, true);
                         if (lexiconScore == 0.0) {
                             return;
                         }
                         vals[0] = trainData.attribute(0).indexOfValue(String.valueOf(lexiconScore));
+                    } else if (isLexiconMethod) {
+                        double lexiconScore = lexiconMethod.analyzeTweet(text, false);
+
+                        if (lexiconScore < -10) {
+                            lexiconScore = -10;
+                        } else if (lexiconScore > 10.0) {
+                            lexiconScore = 10;
+                        }
+                        lexiconScore += 10;
+
+                        vals[2] = lexiconScore;
+                        vals[0] = trainData.attribute(0).indexOfValue(String.valueOf(score));
                     } else {
                         vals[0] = trainData.attribute(0).indexOfValue(String.valueOf(score));
                     }
-                } else {
-                    vals[0] = score;
+
+                    text = preprocess(text);
+
+                    vals[1] = trainData.attribute(1).addStringValue(text);
+
+
+                    trainData.add(new DenseInstance(1.0, vals));
+                    trainData.setClassIndex(0);
+
                 }
-                text = preprocess(text);
-
-                vals[1] = trainData.attribute(1).addStringValue(text);
-
-                if (isLexiconMethod) {
-                    double lexiconScore = lexiconMethod.analyzeTweet(text, true) + 2;
-                    if (lexiconScore <= 0.0) {
-                        System.out.println("HERE");
-                    }
-
-                    vals[2] = lexiconScore;
-                }
-
-                trainData.add(new DenseInstance(1.0, vals));
-                trainData.setClassIndex(0);
-
             }
         });
         System.out.println("Instances: " + trainData.numInstances());
@@ -507,8 +476,6 @@ public class MLMethod {
             }
             trainingData = subsetData;
         }
-
-
     }
 
     private String preprocess(String tweet) {
@@ -557,68 +524,49 @@ public class MLMethod {
 
     }
 
-    private void buildInstancesTrainSource2(boolean nominal) throws Exception {
-        Instances trainData = buildArff("TrainingData", nominal);
-        AtomicInteger counter = new AtomicInteger(0);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("C:\\Users\\matte\\Desktop\\09_2020.csv"), StandardCharsets.UTF_8));
+    public void caseStudy() throws Exception {
+        Instances data = buildArff("CaseStudyTweets", true);
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        List<CaseStudyTweet> result = session.createQuery("from CaseStudyTweet", CaseStudyTweet.class).list();
+        AtomicInteger counterPositive = new AtomicInteger(0);
+        AtomicInteger counterNegative = new AtomicInteger(0);
+        FilteredClassifier classifier = (FilteredClassifier) SerializationHelper.read(nb_file);
 
-        reader.lines().forEach(line -> {
-            if (counter.incrementAndGet() % 2 != 0) {
-                //return;
+
+        for (int i = 0; i < result.size(); i++) {
+            Date date = new Date(1652655600000L);
+            if (
+                    result.get(i).getCreated_at().after(new Date(1652655600000L)) &&
+                            Objects.equals(result.get(i).getTopic(), "devin booker")) {
+                double[] vals = new double[data.numAttributes()];
+                String text = result.get(i).getText().toLowerCase(Locale.ROOT);
+                text = preprocess(text);
+                vals[1] = data.attribute(1).addStringValue(text);
+                data.add(new DenseInstance(1.0, vals));
+                data.setClassIndex(0);
+                //System.out.println(text);
             }
-            String[] components = line.split(",");
-            if (components.length >= 10) {
+        }
 
-                String text = components[9];
-                double[] vals = new double[trainData.numAttributes()];
-                double lexiconScore = lexiconMethod.analyzeTweet(text, true);
-                if (lexiconScore == 0.0) {
-                    return;
+        for (int i = 0; i < data.numInstances(); i++) {
+            try {
+                double index = classifier.classifyInstance(data.instance(i));
+                String className = data.instance(i).attribute(0).value((int) index);
+                if (Objects.equals(className, "1.0")) {
+
+                    counterPositive.incrementAndGet();
+                } else {
+                    counterNegative.incrementAndGet();
                 }
-                vals[0] = trainData.attribute(0).indexOfValue(String.valueOf(lexiconScore));
+                System.out.println(className + " " + result.get(i).getText());
 
-
-                text = text.replaceAll("\"", "");
-                vals[1] = trainData.attribute(1).addStringValue(text);
-
-
-                trainData.add(new DenseInstance(1.0, vals));
-                trainData.setClassIndex(0);
-
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
+        }
+        System.out.println(counterPositive.get());
+        System.out.println(counterNegative.get());
 
-        reader = new BufferedReader(new InputStreamReader(new FileInputStream("C:\\Users\\matte\\Desktop\\08_2020.csv"), StandardCharsets.UTF_8));
-
-        reader.lines().forEach(line -> {
-            if (counter.incrementAndGet() % 2 != 0) {
-                //return;
-            }
-            String[] components = line.split(",");
-            if (components.length >= 10) {
-
-                String text = components[9];
-                double[] vals = new double[trainData.numAttributes()];
-                double lexiconScore = lexiconMethod.analyzeTweet(text, true);
-                if (lexiconScore == 0.0) {
-                    return;
-                }
-                vals[0] = trainData.attribute(0).indexOfValue(String.valueOf(lexiconScore));
-
-
-                text = text.replaceAll("\"", "");
-                vals[1] = trainData.attribute(1).addStringValue(text);
-
-
-                trainData.add(new DenseInstance(1.0, vals));
-                trainData.setClassIndex(0);
-
-            }
-        });
-
-        System.out.println("Instances: " + trainData.numInstances());
-
-        trainData.setClassIndex(0);
-        trainingData = trainData;
     }
 }

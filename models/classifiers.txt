@@ -9,9 +9,9 @@ Root relative squared error             77.0982 %
 Total Number of Instances             5404
 
 Confusion Matrix: [[1171.0, 605.0], [507.0, 3121.0]]
-Recall: 0.6593468468468469
-Precision: 0.6978545887961859
-F-Measure: 0.6780544296467864
+Recall: 86.03
+Precision: 83.76
+F-Measure: 84.88
 
 - Logistic Regression:
 
@@ -81,5 +81,44 @@ Confusion Matrix: [[1105.0, 671.0], [1165.0, 2463.0]]
 Recall: 0.6221846846846847
 Precision: 0.486784140969163
 F-Measure: 0.5462184873949579
+
+Hybrid - Method 1 (Lexicon as feature, neutral included)
+** class weka.classifiers.bayes.NaiveBayesMultinomial Evaluation with Datasets: 1600000 **
+
+Correctly Classified Instances        4332               80.1628 %
+Incorrectly Classified Instances      1072               19.8372 %
+Kappa statistic                          0.551
+Mean absolute error                      0.2361
+Root mean squared error                  0.3832
+Relative absolute error                 47.2148 %
+Root relative squared error             76.6482 %
+Total Number of Instances             5404
+
+Confusion Matrix: [[1244.0, 532.0], [540.0, 3088.0]]
+Recall: 0.8511576626240352
+Precision: 0.8530386740331491
+F-Measure: 0.8520971302428255
+
+Process finished with exit code 0
+
+
+Hybrid - Method 2 (Lexicon for Training, neutral = ignore)
+** class weka.classifiers.bayes.NaiveBayesMultinomial Evaluation with Datasets: 973671 **
+
+Correctly Classified Instances        4395               81.3286 %
+Incorrectly Classified Instances      1009               18.6714 %
+Kappa statistic                          0.5614
+Mean absolute error                      0.2335
+Root mean squared error                  0.3688
+Relative absolute error                 51.1065 %
+Root relative squared error             78.1362 %
+Total Number of Instances             5404
+
+Confusion Matrix: [[1149.0, 627.0], [382.0, 3246.0]]
+Recall: 0.8947078280044102
+Precision: 0.8381099922540666
+F-Measure: 0.8654846020530595
+
+
 
 

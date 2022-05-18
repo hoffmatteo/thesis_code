@@ -190,3 +190,8 @@ $RECYCLE.BIN/
 /models/forestdelete.model
 /data/traindataFiltered.arff
 /data/traindata.arff
+/data/traindataHybridMethod1.arff
+/data/traindataHybrid.arff
+/data/traindataHybridNegative.arff
+
+

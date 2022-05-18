@@ -22,7 +22,9 @@ public class SentimentAnalysis {
             //crawler.crawlTweets(1000000, "cp3", factory);
 
 
-            MLMethod nb = new MLMethod(factory);
+            //MLMethod nb = new MLMethod(factory);
+            HybridMethod hm = new HybridMethod(factory);
+            hm.try1();
 
 
         } catch (Exception e) {
