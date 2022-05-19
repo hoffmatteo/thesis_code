@@ -319,7 +319,7 @@ public class MLMethod {
             vals[1] = data.attribute(1).addStringValue(text);
 
             if (isLexiconMethod) {
-                double score = lexiconMethod.analyzeTweet(tweet.getText(), false);
+                double score = lexiconMethod.analyzeTweet(tweet.getText(), false, false);
                 if (score < -10) {
                     score = -10;
                 } else if (score > 10) {
@@ -405,13 +405,13 @@ public class MLMethod {
                 if (nominal) {
 
                     if (isLexiconMethod2) {
-                        double lexiconScore = lexiconMethod.analyzeTweet(text, true);
+                        double lexiconScore = lexiconMethod.analyzeTweet(text, true, false);
                         if (lexiconScore == 0.0) {
                             return;
                         }
                         vals[0] = trainData.attribute(0).indexOfValue(String.valueOf(lexiconScore));
                     } else if (isLexiconMethod) {
-                        double lexiconScore = lexiconMethod.analyzeTweet(text, false);
+                        double lexiconScore = lexiconMethod.analyzeTweet(text, false, false);
 
                         if (lexiconScore < -10) {
                             lexiconScore = -10;

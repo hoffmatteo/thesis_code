@@ -2,6 +2,8 @@ package com.oth.thesis;
 
 import com.oth.thesis.database.AnalyzedTweet;
 import com.oth.thesis.database.TrainingTweet;
+import com.oth.thesis.twitter.TwitterCrawler;
+import com.vader.sentiment.analyzer.SentimentAnalyzer;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -11,6 +13,9 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
+
+import static com.oth.thesis.twitter.TwitterCrawler.ANSI_GREEN;
+import static com.oth.thesis.twitter.TwitterCrawler.ANSI_RESET;
 
 public class LexiconMethod {
     private static final String sentiment_lexicon = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\lexicons\\vader_lexicon.txt";
@@ -45,18 +50,19 @@ public class LexiconMethod {
             //analyzeTweets();
             //analyzeTweet("Very funny \uD83D\uDE02!");
             //TrainingData.create(sessionFactory);
-            evaluate();
+            evaluate(false);
         } catch (IOException ex) {
             ex.printStackTrace();
 
         }
     }
 
-    public double analyzeTweet(String tweet, boolean normalize) {
+    public double analyzeTweet(String tweet, boolean normalize, boolean print) {
         String[] words = tweet.split(" ");
         double score = 0.0;
         int index = 0;
-        //System.out.println(ANSI_GREEN + "Analyzing tweet: " + tweet + ANSI_RESET);
+        if (print)
+            System.out.println(ANSI_GREEN + "Analyzing tweet: " + tweet + ANSI_RESET);
         for (int i = 0; i < words.length; i++) {
             words[i] = preprocess(words[i]);
         }
@@ -75,13 +81,15 @@ public class LexiconMethod {
                 for (int tempIndex = index - 1; tempIndex >= 0 && index - 2 <= tempIndex; tempIndex--) {
                     if (negationDictionary.contains(words[tempIndex])) {
                         polarity *= -1;
-                        //System.out.println("Detected negation word " + words[tempIndex]);
+                        if (print)
+                            System.out.println("Detected negation word " + words[tempIndex]);
                     } else if (intensityDictionary.containsKey(words[tempIndex])) {
                         polarity *= intensityDictionary.get(words[tempIndex]);
                     }
                 }
                 score += polarity * sentimentDictionary.get(word);
-                //System.out.println("Detected sentiment word " + word + " with polarity " + polarity * sentimentDictionary.get(word));
+                if (print)
+                    System.out.println("Detected sentiment word " + word + " with polarity " + polarity * sentimentDictionary.get(word));
 
             } else if (emojiDictionary.containsKey(word)) {
                 score += emojiDictionary.get(word);
@@ -91,7 +99,8 @@ public class LexiconMethod {
 
             index++;
         }
-        //System.out.println(TwitterCrawler.ANSI_BLUE + "Final score: " + score + ANSI_RESET);
+        if (print)
+            System.out.println(TwitterCrawler.ANSI_BLUE + "Final score: " + score + ANSI_RESET);
         if (normalize) {
             return normalizeScore(score);
         }
@@ -106,7 +115,7 @@ public class LexiconMethod {
         List<AnalyzedTweet> result = session.createQuery("from AnalyzedTweet ", AnalyzedTweet.class).list();
         result.forEach(tweet -> {
 
-            double score = analyzeTweet(tweet.getText(), false);
+            double score = analyzeTweet(tweet.getText(), false, false);
             tweet.setLexicon_score(score);
             session.saveOrUpdate(tweet);
         });
@@ -117,37 +126,95 @@ public class LexiconMethod {
     }
 
     private double normalizeScore(double score) {
-        if (score < -0.5) {
+        if (score <= -1) {
             return -1;
-        } else if (score > 0.5) {
+        } else if (score >= 1) {
             return 1;
         } else {
             return 0;
         }
     }
 
-    public void evaluate() {
+    public void evaluate(boolean neutral) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         List<TrainingTweet> tweets = session.createQuery("from TrainingTweet ", TrainingTweet.class).list();
         AtomicInteger falseTweets = new AtomicInteger(0);
         AtomicInteger correctTweets = new AtomicInteger(0);
+        //Problem: Neutral!
+        double trueneutral = 0;
+        double truenegative = 0;
+        double truepositive = 0;
 
-        tweets.forEach(tweet -> {
-            double lexiconScore = analyzeTweet(tweet.getText(), false);
-            double correctScore = tweet.getScore();
-            if (lexiconScore < -0.5 || lexiconScore > 0.5) {
-                if (sameSign(lexiconScore, correctScore)) {
-                    correctTweets.incrementAndGet();
-                } else {
-                    falseTweets.incrementAndGet();
-                }
-            } else if (correctScore == 0) {
-                correctTweets.incrementAndGet();
-            } else {
-                falseTweets.incrementAndGet();
+        double falseNeutralForPositive = 0;
+        double falseNeutralForNegative = 0;
+        double falseNegativeForNeutral = 0;
+        double falseNegativeForPositive = 0;
+
+        double falsePositiveForNeutral = 0;
+        double falsePositiveForNegative = 0;
+
+
+        for (int i = 0; i < tweets.size(); i++) {
+            double lexiconScore = analyzeTweet(tweets.get(i).getText(), true, false);
+            int lexiconRounded = (int) (lexiconScore * 10) / 10;
+            double correctScore = tweets.get(i).getScore();
+            if (correctScore == 0.0 && !neutral) {
+                continue;
             }
-        });
+            //TP, TN, FP, FN
+            boolean correct = lexiconScore == correctScore;
+            if (correct) {
+                switch (lexiconRounded) {
+                    case -1 -> truenegative++;
+                    case 0 -> trueneutral++;
+                    case 1 -> truepositive++;
+                }
+            } else {
+                switch (lexiconRounded) {
+                    case -1:
+                        if (correctScore == 1)
+                            falseNegativeForPositive++;
+                        else
+                            falseNegativeForNeutral++;
+                        break;
+                    case 0:
+                        if (correctScore == 1)
+                            falseNeutralForPositive++;
+                        else
+                            falseNeutralForNegative++;
+                        break;
+                    case 1:
+                        if (correctScore == -1)
+                            falsePositiveForNegative++;
+                        else
+                            falsePositiveForNeutral++;
+                        break;
+                }
+            }
+        }
+
+        double neutralPrecison = trueneutral / (trueneutral + falseNeutralForPositive + falseNeutralForNegative);
+        double neutralRecall = trueneutral / (trueneutral + falseNegativeForNeutral + falsePositiveForNeutral);
+        double neutralFScore = (2 * neutralPrecison * neutralRecall) / (neutralPrecison + neutralRecall);
+
+        double negativePrecision = truenegative / (truenegative + falseNegativeForPositive + falseNegativeForNeutral);
+        double negativeRecall = truenegative / (truenegative + falsePositiveForNegative + falseNeutralForNegative);
+        double negativeFScore = (2 * negativePrecision * negativeRecall) / (negativePrecision + negativeRecall);
+
+        double positivePrecision = truepositive / (truepositive + falsePositiveForNegative + falsePositiveForNeutral);
+        double postiveRecall = truepositive / (truepositive + falseNeutralForPositive + falseNegativeForPositive);
+        double positiveFScore = (2 * positivePrecision * postiveRecall) / (positivePrecision + postiveRecall);
+
+        System.out.println(neutralFScore + " " + negativeFScore + " " + positiveFScore);
+
+        System.out.println(neutralFScore + " " + negativeFScore + " " + positiveFScore);
+        System.out.println(neutralPrecison + " " + negativePrecision + " " + positivePrecision);
+        System.out.println(neutralRecall + " " + negativeRecall + " " + postiveRecall);
+
+
+
+
 
         /*
         Correctly Classified Instances        2883               60.9901 %
@@ -167,6 +234,103 @@ Total Number of Instances             4727
         System.out.println("Correctly classified instances:\t " + correctTweets.get() + "\t " + correctPercentage + "%");
         System.out.println("Incorrectly classified instances:\t " + falseTweets.get() + "\t " + falsePercentage + "%");
         System.out.println("Total number instances:\t " + totalInstances);
+
+
+        trueneutral = 0;
+        truenegative = 0;
+        truepositive = 0;
+
+        falseNeutralForPositive = 0;
+        falseNeutralForNegative = 0;
+        falseNegativeForNeutral = 0;
+        falseNegativeForPositive = 0;
+
+        falsePositiveForNeutral = 0;
+        falsePositiveForNegative = 0;
+
+
+        for (int i = 0; i < tweets.size(); i++) {
+            double correctScore = tweets.get(i).getScore();
+            if (correctScore == 0.0 && !neutral) {
+                continue;
+            }
+            double vaderScore = SentimentAnalyzer.getScoresFor(tweets.get(i).getText()).getCompoundPolarity();
+            if (vaderScore >= 0.05) {
+                vaderScore = 1.0;
+            } else if (vaderScore <= -0.05) {
+                vaderScore = -1.0;
+            } else {
+                vaderScore = 0.0;
+            }
+            int vaderScoreRounded = (int) vaderScore;
+            boolean correct = vaderScore == correctScore;
+            if (correct) {
+                switch (vaderScoreRounded) {
+                    case -1 -> truenegative++;
+                    case 0 -> trueneutral++;
+                    case 1 -> truepositive++;
+                }
+            } else {
+                switch (vaderScoreRounded) {
+                    case -1:
+                        if (correctScore == 1)
+                            falseNegativeForPositive++;
+                        else
+                            falseNegativeForNeutral++;
+                        break;
+                    case 0:
+                        if (correctScore == 1)
+                            falseNeutralForPositive++;
+                        else
+                            falseNeutralForNegative++;
+                        break;
+                    case 1:
+                        if (correctScore == -1)
+                            falsePositiveForNegative++;
+                        else
+                            falsePositiveForNeutral++;
+                        break;
+                }
+            }
+        }
+
+        neutralPrecison = trueneutral / (trueneutral + falseNeutralForPositive + falseNeutralForNegative);
+        neutralRecall = trueneutral / (trueneutral + falseNegativeForNeutral + falsePositiveForNeutral);
+        neutralFScore = (2 * neutralPrecison * neutralRecall) / (neutralPrecison + neutralRecall);
+
+        negativePrecision = truenegative / (truenegative + falseNegativeForPositive + falseNegativeForNeutral);
+        negativeRecall = truenegative / (truenegative + falsePositiveForNegative + falseNeutralForNegative);
+        negativeFScore = (2 * negativePrecision * negativeRecall) / (negativePrecision + negativeRecall);
+
+        positivePrecision = truepositive / (truepositive + falsePositiveForNegative + falsePositiveForNeutral);
+        postiveRecall = truepositive / (truepositive + falseNeutralForPositive + falseNegativeForPositive);
+        positiveFScore = (2 * positivePrecision * postiveRecall) / (positivePrecision + postiveRecall);
+
+
+        System.out.println(neutralFScore + " " + negativeFScore + " " + positiveFScore);
+        System.out.println(neutralPrecison + " " + negativePrecision + " " + positivePrecision);
+        System.out.println(neutralRecall + " " + negativeRecall + " " + postiveRecall);
+
+
+
+        /*
+        Correctly Classified Instances        2883               60.9901 %
+Incorrectly Classified Instances      1844               39.0099 %
+Kappa statistic                          0.2073
+Mean absolute error                      0.4126
+Root mean squared error                  0.5241
+Relative absolute error                 82.1423 %
+Root relative squared error            104.3431 %
+Total Number of Instances             4727
+         */
+        System.out.println("Lexicon Method Evaluation: ");
+        //totalInstances = positiveCount + falseCount;
+        //correctPercentage = (double) positiveCount / totalInstances * 100;
+        //falsePercentage = (double) falseCount / totalInstances * 100;
+
+        //System.out.println("Correctly classified instances:\t " + positiveCount + "\t " + correctPercentage + "%");
+        //System.out.println("Incorrectly classified instances:\t " + falseCount + "\t " + falsePercentage + "%");
+        //System.out.println("Total number instances:\t " + totalInstances);
 
 
     }

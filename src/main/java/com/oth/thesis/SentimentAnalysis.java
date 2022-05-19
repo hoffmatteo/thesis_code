@@ -10,7 +10,7 @@ public class SentimentAnalysis {
     public static void main(String[] args) {
         try {
             SessionFactory factory = startDatabase();
-            //LexiconMethod lexiconMethod = new LexiconMethod(factory);
+            LexiconMethod lexiconMethod = new LexiconMethod(factory);
             //MLMethod nb = new MLMethod(factory);
             //TrainingData.create(factory);
             //MLMethod nb = new MLMethod(factory);
@@ -23,8 +23,8 @@ public class SentimentAnalysis {
 
 
             //MLMethod nb = new MLMethod(factory);
-            HybridMethod hm = new HybridMethod(factory);
-            hm.try1();
+            //HybridMethod hm = new HybridMethod(factory);
+            //hm.try1();
 
 
         } catch (Exception e) {
