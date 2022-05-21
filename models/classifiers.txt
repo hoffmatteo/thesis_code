@@ -121,4 +121,121 @@ F-Measure: 0.8654846020530595
 
 
 
+LEXICON (<= -0.1, >= 0.1):
+
+neutral false = detected neutral, incorrect
+0.512172654296618 0.4838160136286201 0.620407259849491
+0.7396427213987077 0.42606086583797687 0.5183062130177515
+0.39170692431562 0.5596846846846847 0.7726019845644984
+Lexicon Method Evaluation:
+Correctly classified instances:	 5743	 55.37022753567297% (of which 3797 negative+positive, 1946 neutral)
+Incorrectly classified instances:	 4629	 44.62977246432703% (of which 922 negative/positive false for negative/positive, 685 neutral false for neg/pos, 3022 neg/pos false for neutral)
+Total number instances:	 10372
+Correct number of neutral instances: 4968
+Neutral instances detected by lexicon score: 2631 (of which 2538 no sentiment, 56 sentiment sum of 0.0, 37 rounded)
+Of which incorrect (should be positive or negative): 685
+No sentiment detected: 2538
+True neutral (0.0): 2594
+Rounded neutral: 37
+
+2752 positive/negative false for neutral
+685 neutral false for positive/negative
+
+3022 incorrect neutral instances
+
+
+Mai 21, 2022 7:44:28 PM org.hibernate.jpa.internal.LegacySpecHelper getValue
+WARN: HHH90000021: Encountered deprecated setting [javax.persistence.lock.timeout], use [jakarta.persistence.lock.timeout] instead
+NaN 0.6275252525252525 0.8060388209920921
+0.0 0.7140804597701149 0.8425007514277126
+NaN 0.5596846846846847 0.7726019845644984
+Lexicon Method Evaluation:
+Correctly classified instances:	 3797	 70.26276831976314%
+Incorrectly classified instances:	 1607	 29.737231680236864% (of which 685 neutral false, 922 positive/negative false)
+Total number instances:	 5404
+Correct number of neutral instances: 0
+Neutral instances detected by lexicon score: 685 (of which 625 no sentiment, 32 sentiment sum of 0.0, 25 rounded)
+Of which incorrect (should be positive or negative): 685
+No sentiment detected: 628
+True neutral (0.0): 660
+Rounded neutral: 25
+
+Process finished with exit code 0
+
+LEXICON (<= -0.5, >= 0.5):
+
+neutral false = detected neutral, incorrect
+0.538945809159363 0.4732073517991199 0.6218678815489749
+0.6967762527928503 0.43794920939147103 0.529891304347826
+0.4394122383252818 0.5146396396396397 0.7524807056229328
+Lexicon Method Evaluation:
+Correctly classified instances:	 5827	 56.18010026995758% (of which 3644 (-153) neg/pos, 2183(+237) neutral)
+Incorrectly classified instances:	 4545	 43.81989973004242% (of which 810(-112) pos/neg false for pos/neg, 950(+300) neutral false for pos/neg, 2785(-237) pos/neg false for neutral)
+Total number instances:	 10372
+Correct number of neutral instances: 4968
+Neutral instances detected by lexicon score: 3133
+Of which incorrect (should be positive or negative): 950
+No sentiment detected: 2538
+True neutral (0.0): 2594
+Rounded neutral: 539
+Mai 21, 2022 8:10:11 PM org.hibernate.jpa.internal.LegacySpecHelper getValue
+WARN: HHH90000021: Encountered deprecated setting [javax.persistence.lock.timeout], use [jakarta.persistence.lock.timeout] instead
+NaN 0.6027035938015167 0.8000000000000002
+0.0 0.7271280827366746 0.8539255552080075
+NaN 0.5146396396396397 0.7524807056229328
+Lexicon Method Evaluation:
+Correctly classified instances:	 3644	 67.43153219837158% (-153)
+Incorrectly classified instances:	 1760	 32.56846780162842% (of which 950(+265) neutral false, 810(-112) neg/pos false)
+Total number instances:	 5404
+Correct number of neutral instances: 0
+Neutral instances detected by lexicon score: 950
+Of which incorrect (should be positive or negative): 950
+No sentiment detected: 628
+True neutral (0.0): 660
+Rounded neutral: 290
+
+GAINED 84 INSTANCES FOR NEUTRAL (+237 neutral - 153 neg/pos)
+LOST 153 INSTANCES FOR NEG/POS (+265 neutral false - 122 neg/pos false)
+
+LEXICON (<= -1.0, >= 1.0):
+0.5691627959669197 0.464184997179921 0.6192808505554892
+0.6509458408914226 0.46497175141242936 0.5464895635673624
+0.5056360708534622 0.4634009009009009 0.7144432194046306
+Lexicon Method Evaluation:
+Correctly classified instances:	 5927	 57.14423447743926%
+Incorrectly classified instances:	 4445	 42.85576552256074%
+Total number instances:	 10372
+Correct number of neutral instances: 4968
+Neutral instances detected by lexicon score: 3859
+Of which incorrect (should be positive or negative): 1347
+No sentiment detected: 2538
+True neutral (0.0): 2594
+Rounded neutral: 1265
+Mai 21, 2022 8:24:01 PM org.hibernate.jpa.internal.LegacySpecHelper getValue
+WARN: HHH90000021: Encountered deprecated setting [javax.persistence.lock.timeout], use [jakarta.persistence.lock.timeout] instead
+NaN 0.5761288064403222 0.7849788007268322
+0.0 0.7613320999074931 0.8709677419354839
+NaN 0.4634009009009009 0.7144432194046306
+Lexicon Method Evaluation:
+Correctly classified instances:	 3415	 63.19393042190969%
+Incorrectly classified instances:	 1989	 36.80606957809031%
+Total number instances:	 5404
+Correct number of neutral instances: 0
+Neutral instances detected by lexicon score: 1347
+Of which incorrect (should be positive or negative): 1347
+No sentiment detected: 628
+True neutral (0.0): 660
+Rounded neutral: 687
+
+GAINED 100 INSTANCES FOR NEUTRAL
+
+LOST 229 INSTANCES FOR NEG/POS
+
+Process finished with exit code 0
+
+
+
+
+
+
 
