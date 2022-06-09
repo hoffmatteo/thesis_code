@@ -32,10 +32,10 @@ public class MLMethod {
     public static final String test_arff_nominal = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\testTweetsNominal.arff";
     public static final String test_arff_nominal_method3 = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\testTweetsNominalMethod3.arff";
     public static final String test_arff_nominal_method32 = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\testTweetsNominalMethod32.arff";
-    public static String nb_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\maximum\\nbgauss.model";
+    public static String nb_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\equal\\nbgauss.model";
     private static final String logistic_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\equal\\logistic.model";
     private static final String svm_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\equal\\svm.model";
-    private static final String forest_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\equal\\forest.model";
+    private static final String forest_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\maximum\\forest.model";
     public static final String training_path = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\training.1600000.processed.noemoticon.csv";
     private static final String dictionary_path = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\dictionary.txt";
     private static final String filteredWordsPath = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\lexicons\\filteredWords.txt";
@@ -61,10 +61,10 @@ public class MLMethod {
         init();
         //caseStudy();
         //buildArffTrain(true);
-        //runNaiveBayes();
+        runNaiveBayes();
         //runLogisticRegression(95000);
-        //runRandomForest(95000);
-        runSVM(1000000);
+        //runRandomForest(120000);
+        //runSVM(1000000);
 
     }
 
@@ -108,7 +108,7 @@ public class MLMethod {
     }
 
     public void runNaiveBayes() throws Exception {
-        buildInstancesTrain(true, 0);
+        buildInstancesTrain(true, 95000);
 
         boolean nominal = true;
         //NaiveBayesMultinomial nb = new NaiveBayesMultinomial();
@@ -126,7 +126,7 @@ public class MLMethod {
         Logistic log = new Logistic();
         log.setOptions(new String[]{"-S", "-M", "10"});
 
-        train(log, logistic_file);
+        //train(log, logistic_file);
         test(logistic_file, nominal);
 
     }

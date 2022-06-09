@@ -44,6 +44,9 @@ Root relative squared error             79.2314 %
 Total Number of Instances             5404
 
 Confusion Matrix: [[1137.0, 639.0], [607.0, 3021.0]]
+Recall: 0.8326901874310915
+Precision: 0.8254098360655737
+F-Measure: 0.8290340285400658
 
 - Random Forest:
 ** class weka.classifiers.trees.RandomForest Evaluation with Datasets: 120000 **
@@ -140,6 +143,23 @@ Root mean squared error                  0.4887
 Relative absolute error                 77.6442 %
 Root relative squared error             97.7483 %
 Total Number of Instances             5404
+
+** class weka.classifiers.bayes.NaiveBayes Evaluation with Datasets: 95000 **
+
+Correctly Classified Instances        3529               65.3035 %
+Incorrectly Classified Instances      1875               34.6965 %
+Kappa statistic                          0.2614
+Mean absolute error                      0.3939
+Root mean squared error                  0.493
+Relative absolute error                 78.7799 %
+Root relative squared error             98.5965 %
+Total Number of Instances             5404
+
+Confusion Matrix: [[1063.0, 713.0], [1162.0, 2466.0]]
+Recall: 0.6797133406835723
+Precision: 0.7757156338471217
+F-Measure: 0.7245482591449979
+
 
 Confusion Matrix: [[1105.0, 671.0], [1165.0, 2463.0]]
 Recall: 0.6788864388092613
