@@ -10,12 +10,12 @@ public class SentimentAnalysis {
     public static void main(String[] args) {
         try {
             SessionFactory factory = startDatabase();
-            LexiconMethod lexiconMethod = new LexiconMethod(factory);
-            //MLMethod nb = new MLMethod(factory);
+            //LexiconMethod lexiconMethod = new LexiconMethod(factory);
+            MLMethod nb = new MLMethod(factory);
             //TrainingData.create(factory);
             //MLMethod nb = new MLMethod(factory);
             //HybridMethod hybridMethod = new HybridMethod(factory);
-            //hybridMethod.try2();
+            //hybridMethod.try1();
             //TwitterCrawler crawler = new TwitterCrawler();
             //crawler.crawlTweets(1000000, "devin booker", factory);
             //crawler.crawlTweets(1000000, "chris paul", factory);

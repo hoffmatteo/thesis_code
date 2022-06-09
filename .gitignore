@@ -186,6 +186,8 @@ $RECYCLE.BIN/
 /models/nbmultitext.model
 /models/forest2.model
 /models/maximum/forest.model
+/models/equal/forest.model
+
 
 /models/forestdelete.model
 /data/traindataFiltered.arff

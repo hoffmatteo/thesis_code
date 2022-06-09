@@ -13,6 +13,23 @@ Recall: 86.03
 Precision: 83.76
 F-Measure: 84.88
 
+** class weka.classifiers.bayes.NaiveBayesMultinomial Evaluation with Datasets: 95000 **
+
+Correctly Classified Instances        4178               77.3131 %
+Incorrectly Classified Instances      1226               22.6869 %
+Kappa statistic                          0.4885
+Mean absolute error                      0.2824
+Root mean squared error                  0.4048
+Relative absolute error                 56.4886 %
+Root relative squared error             80.9599 %
+Total Number of Instances             5404
+
+Confusion Matrix: [[1181.0, 595.0], [631.0, 2997.0]]
+Recall: 0.8260749724366042
+Precision: 0.8343541202672605
+F-Measure: 0.8301939058171744
+
+
 - Logistic Regression:
 
 ** class weka.classifiers.functions.Logistic Evaluation with Datasets: 95000 **
@@ -27,9 +44,6 @@ Root relative squared error             79.2314 %
 Total Number of Instances             5404
 
 Confusion Matrix: [[1137.0, 639.0], [607.0, 3021.0]]
-Recall: 0.6402027027027027
-Precision: 0.6519495412844036
-F-Measure: 0.6460227272727274
 
 - Random Forest:
 ** class weka.classifiers.trees.RandomForest Evaluation with Datasets: 120000 **
@@ -44,10 +58,60 @@ Root relative squared error             83.9133 %
 Total Number of Instances             5404
 
 Confusion Matrix: [[1194.0, 582.0], [620.0, 3008.0]]
-Recall: 0.6722972972972973
-Precision: 0.6582138919514884
-F-Measure: 0.6651810584958218
+Recall: 0.
+Precision: 0.
+F-Measure: 0.
+
+** class weka.classifiers.trees.RandomForest Evaluation with Datasets: 95000 **
+
+Correctly Classified Instances        4151               76.8135 %
+Incorrectly Classified Instances      1253               23.1865 %
+Kappa statistic                          0.4791
+Mean absolute error                      0.3901
+Root mean squared error                  0.417
+Relative absolute error                 78.0298 %
+Root relative squared error             83.3983 %
+Total Number of Instances             5404
+
+Confusion Matrix: [[1180.0, 596.0], [657.0, 2971.0]]
+Recall: 0.8189084895259096
+Precision: 0.8329128118867396
+F-Measure: 0.8258512856150105
 Zero Weights processed. Default weights will be used
+
+- Support Vector Machines:
+** class weka.classifiers.functions.LibSVM Evaluation with Datasets: 95000 **
+
+Correctly Classified Instances        4145               76.7024 %
+Incorrectly Classified Instances      1259               23.2976 %
+Kappa statistic                          0.4703
+Mean absolute error                      0.233
+Root mean squared error                  0.4827
+Relative absolute error                 46.5951 %
+Root relative squared error             96.5351 %
+Total Number of Instances             5404
+
+Confusion Matrix: [[1135.0, 641.0], [618.0, 3010.0]]
+Recall: 0.8296582138919515
+Precision: 0.8244316625582032
+F-Measure: 0.827036680862756
+
+** class weka.classifiers.functions.LibSVM Evaluation with Datasets: 150000 **
+
+Correctly Classified Instances        4203               77.7757 %
+Incorrectly Classified Instances      1201               22.2243 %
+Kappa statistic                          0.4912
+Mean absolute error                      0.2222
+Root mean squared error                  0.4714
+Relative absolute error                 44.4486 %
+Root relative squared error             94.2853 %
+Total Number of Instances             5404
+
+Confusion Matrix: [[1140.0, 636.0], [565.0, 3063.0]]
+Recall: 0.8442668136714443
+Precision: 0.8280616382806164
+F-Measure: 0.8360857103862427
+
 
 - Naive Bayes Gauss (word count):
 ** class weka.classifiers.bayes.NaiveBayes Evaluation with Datasets: 1600000 **
@@ -66,7 +130,7 @@ Recall: 0.5990990990990991
 Precision: 0.5009416195856874
 F-Measure: 0.5456410256410257
 
-** class weka.classifiers.bayes.NaiveBayes Evaluation with Datasets: 1600000 ** Count?
+** class weka.classifiers.bayes.NaiveBayes Evaluation with Datasets: 1600000 **
 
 Correctly Classified Instances        3568               66.0252 %
 Incorrectly Classified Instances      1836               33.9748 %
@@ -78,9 +142,9 @@ Root relative squared error             97.7483 %
 Total Number of Instances             5404
 
 Confusion Matrix: [[1105.0, 671.0], [1165.0, 2463.0]]
-Recall: 0.6221846846846847
-Precision: 0.486784140969163
-F-Measure: 0.5462184873949579
+Recall: 0.6788864388092613
+Precision: 0.7858966177409062
+F-Measure: 0.7284826974267969
 
 Hybrid - Method 1 (Lexicon as feature, neutral included)
 ** class weka.classifiers.bayes.NaiveBayesMultinomial Evaluation with Datasets: 1600000 **
@@ -100,6 +164,43 @@ Precision: 0.8530386740331491
 F-Measure: 0.8520971302428255
 
 Process finished with exit code 0
+
+Hybrid - Method 1 NEW (rounding with 10)
+** class weka.classifiers.bayes.NaiveBayesMultinomial Evaluation with Datasets: 1600000 **
+
+Correctly Classified Instances        4326               80.0518 %
+Incorrectly Classified Instances      1078               19.9482 %
+Kappa statistic                          0.55
+Mean absolute error                      0.2345
+Root mean squared error                  0.3825
+Relative absolute error                 46.898  %
+Root relative squared error             76.5048 %
+Total Number of Instances             5404
+
+Confusion Matrix: [[1253.0, 523.0], [555.0, 3073.0]]
+Recall: 0.8470231532524807
+Precision: 0.8545606229143493
+F-Measure: 0.8507751937984496
+
+Process finished with exit code 0
+
+Hybrid - Method 1 (with normalize)
+** class weka.classifiers.bayes.NaiveBayesMultinomial Evaluation with Datasets: 1600000 **
+
+Correctly Classified Instances        4374               80.94   %
+Incorrectly Classified Instances      1030               19.06   %
+Kappa statistic                          0.5646
+Mean absolute error                      0.2291
+Root mean squared error                  0.3741
+Relative absolute error                 45.8188 %
+Root relative squared error             74.8151 %
+Total Number of Instances             5404
+
+Confusion Matrix: [[1233.0, 543.0], [487.0, 3141.0]]
+Recall: 0.8657662624035282
+Precision: 0.8526058631921825
+F-Measure: 0.8591356673960613
+
 
 
 Hybrid - Method 2 (Lexicon for Training, neutral = ignore)
@@ -121,117 +222,84 @@ F-Measure: 0.8654846020530595
 
 
 
-LEXICON (<= -0.1, >= 0.1):
-
-neutral false = detected neutral, incorrect
-0.512172654296618 0.4838160136286201 0.620407259849491
-0.7396427213987077 0.42606086583797687 0.5183062130177515
-0.39170692431562 0.5596846846846847 0.7726019845644984
+LEXICON:
+0.4527719298245613 0.46365688487584644 0.6120361301556209
+0.7477978674084377 0.38696307460437074 0.5056644488401366
+0.3246779388083736 0.5782657657657657 0.7750826901874311
 Lexicon Method Evaluation:
-Correctly classified instances:	 5743	 55.37022753567297% (of which 3797 negative+positive, 1946 neutral)
-Incorrectly classified instances:	 4629	 44.62977246432703% (of which 922 negative/positive false for negative/positive, 685 neutral false for neg/pos, 3022 neg/pos false for neutral)
+Correctly classified instances:	 5452	 52.56459699190127%
+Incorrectly classified instances:	 4920	 47.435403008098724%
 Total number instances:	 10372
 Correct number of neutral instances: 4968
-Neutral instances detected by lexicon score: 2631 (of which 2538 no sentiment, 56 sentiment sum of 0.0, 37 rounded)
-Of which incorrect (should be positive or negative): 685
-No sentiment detected: 2538
-True neutral (0.0): 2594
-Rounded neutral: 37
-
-2752 positive/negative false for neutral
-685 neutral false for positive/negative
-
-3022 incorrect neutral instances
-
-
-Mai 21, 2022 7:44:28 PM org.hibernate.jpa.internal.LegacySpecHelper getValue
+Neutral instances detected by lexicon score: 2157
+Of which incorrect (should be positive or negative): 544
+No sentiment detected: 2087
+True neutral (0.0): 2157
+Rounded neutral: 0
+Confusion matrix
+2812.0|476.0|340.0
+545.0|1027.0|204.0
+2204.0|1151.0|1613.0
+Mai 30, 2022 9:30:20 PM org.hibernate.jpa.internal.LegacySpecHelper getValue
 WARN: HHH90000021: Encountered deprecated setting [javax.persistence.lock.timeout], use [jakarta.persistence.lock.timeout] instead
-NaN 0.6275252525252525 0.8060388209920921
-0.0 0.7140804597701149 0.8425007514277126
-NaN 0.5596846846846847 0.7726019845644984
+NaN 0.6264104910033547 0.8051539012168933
+0.0 0.6833000665335994 0.8376526660708966
+NaN 0.5782657657657657 0.7750826901874311
 Lexicon Method Evaluation:
-Correctly classified instances:	 3797	 70.26276831976314%
-Incorrectly classified instances:	 1607	 29.737231680236864% (of which 685 neutral false, 922 positive/negative false)
+Correctly classified instances:	 3839	 71.039970392302%
+Incorrectly classified instances:	 1565	 28.960029607698%
 Total number instances:	 5404
 Correct number of neutral instances: 0
-Neutral instances detected by lexicon score: 685 (of which 625 no sentiment, 32 sentiment sum of 0.0, 25 rounded)
-Of which incorrect (should be positive or negative): 685
-No sentiment detected: 628
-True neutral (0.0): 660
-Rounded neutral: 25
+Neutral instances detected by lexicon score: 544
+Of which incorrect (should be positive or negative): 544
+No sentiment detected: 509
+True neutral (0.0): 544
+Rounded neutral: 0
+Confusion matrix
+2812.0|476.0|340.0
+545.0|1027.0|204.0
+0.0|0.0|0.0
 
 Process finished with exit code 0
 
-LEXICON (<= -0.5, >= 0.5):
+Unigrams vs. Bigram vs. both:
 
-neutral false = detected neutral, incorrect
-0.538945809159363 0.4732073517991199 0.6218678815489749
-0.6967762527928503 0.43794920939147103 0.529891304347826
-0.4394122383252818 0.5146396396396397 0.7524807056229328
-Lexicon Method Evaluation:
-Correctly classified instances:	 5827	 56.18010026995758% (of which 3644 (-153) neg/pos, 2183(+237) neutral)
-Incorrectly classified instances:	 4545	 43.81989973004242% (of which 810(-112) pos/neg false for pos/neg, 950(+300) neutral false for pos/neg, 2785(-237) pos/neg false for neutral)
-Total number instances:	 10372
-Correct number of neutral instances: 4968
-Neutral instances detected by lexicon score: 3133
-Of which incorrect (should be positive or negative): 950
-No sentiment detected: 2538
-True neutral (0.0): 2594
-Rounded neutral: 539
-Mai 21, 2022 8:10:11 PM org.hibernate.jpa.internal.LegacySpecHelper getValue
-WARN: HHH90000021: Encountered deprecated setting [javax.persistence.lock.timeout], use [jakarta.persistence.lock.timeout] instead
-NaN 0.6027035938015167 0.8000000000000002
-0.0 0.7271280827366746 0.8539255552080075
-NaN 0.5146396396396397 0.7524807056229328
-Lexicon Method Evaluation:
-Correctly classified instances:	 3644	 67.43153219837158% (-153)
-Incorrectly classified instances:	 1760	 32.56846780162842% (of which 950(+265) neutral false, 810(-112) neg/pos false)
-Total number instances:	 5404
-Correct number of neutral instances: 0
-Neutral instances detected by lexicon score: 950
-Of which incorrect (should be positive or negative): 950
-No sentiment detected: 628
-True neutral (0.0): 660
-Rounded neutral: 290
+** class weka.classifiers.bayes.NaiveBayesMultinomial Unigram Evaluation with Datasets: 1600000 **
 
-GAINED 84 INSTANCES FOR NEUTRAL (+237 neutral - 153 neg/pos)
-LOST 153 INSTANCES FOR NEG/POS (+265 neutral false - 122 neg/pos false)
+Correctly Classified Instances        4235               78.3679 %
+Incorrectly Classified Instances      1169               21.6321 %
+Kappa statistic                          0.5052
+Mean absolute error                      0.2817
+Root mean squared error                  0.3898
+Relative absolute error                 56.3487 %
+Root relative squared error             77.9661 %
+Total Number of Instances             5404
 
-LEXICON (<= -1.0, >= 1.0):
-0.5691627959669197 0.464184997179921 0.6192808505554892
-0.6509458408914226 0.46497175141242936 0.5464895635673624
-0.5056360708534622 0.4634009009009009 0.7144432194046306
-Lexicon Method Evaluation:
-Correctly classified instances:	 5927	 57.14423447743926%
-Incorrectly classified instances:	 4445	 42.85576552256074%
-Total number instances:	 10372
-Correct number of neutral instances: 4968
-Neutral instances detected by lexicon score: 3859
-Of which incorrect (should be positive or negative): 1347
-No sentiment detected: 2538
-True neutral (0.0): 2594
-Rounded neutral: 1265
-Mai 21, 2022 8:24:01 PM org.hibernate.jpa.internal.LegacySpecHelper getValue
-WARN: HHH90000021: Encountered deprecated setting [javax.persistence.lock.timeout], use [jakarta.persistence.lock.timeout] instead
-NaN 0.5761288064403222 0.7849788007268322
-0.0 0.7613320999074931 0.8709677419354839
-NaN 0.4634009009009009 0.7144432194046306
-Lexicon Method Evaluation:
-Correctly classified instances:	 3415	 63.19393042190969%
-Incorrectly classified instances:	 1989	 36.80606957809031%
-Total number instances:	 5404
-Correct number of neutral instances: 0
-Neutral instances detected by lexicon score: 1347
-Of which incorrect (should be positive or negative): 1347
-No sentiment detected: 628
-True neutral (0.0): 660
-Rounded neutral: 687
+Confusion Matrix: [[1159.0, 617.0], [552.0, 3076.0]]
+Recall: 0.8478500551267916
+Precision: 0.8329271594909288
+F-Measure: 0.8403223603332877
 
-GAINED 100 INSTANCES FOR NEUTRAL
+** class weka.classifiers.bayes.NaiveBayesMultinomial Bigram Evaluation with Datasets: 1600000 **
 
-LOST 229 INSTANCES FOR NEG/POS
+Correctly Classified Instances        3810               70.5033 %
+Incorrectly Classified Instances      1594               29.4967 %
+Kappa statistic                          0.38
+Mean absolute error                      0.3434
+Root mean squared error                  0.4243
+Relative absolute error                 68.684  %
+Root relative squared error             84.8644 %
+Total Number of Instances             5404
 
-Process finished with exit code 0
+Confusion Matrix: [[1251.0, 525.0], [1069.0, 2559.0]]
+Recall: 0.7053472987872106
+Precision: 0.8297665369649806
+F-Measure: 0.7625148986889153
+
+
+
+
+
 
 
 

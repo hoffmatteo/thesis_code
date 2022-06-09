@@ -6,7 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
-import weka.classifiers.bayes.NaiveBayesMultinomial;
+import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.functions.LibSVM;
 import weka.classifiers.functions.Logistic;
 import weka.classifiers.meta.FilteredClassifier;
@@ -32,10 +32,10 @@ public class MLMethod {
     public static final String test_arff_nominal = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\testTweetsNominal.arff";
     public static final String test_arff_nominal_method3 = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\testTweetsNominalMethod3.arff";
     public static final String test_arff_nominal_method32 = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\testTweetsNominalMethod32.arff";
-    public static String nb_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\maximum\\nbmultingram.model";
-    private static final String logistic_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\maximum\\logistic.model";
-    private static final String svm_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\maximum\\svm.model";
-    private static final String forest_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\maximum\\forest.model";
+    public static String nb_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\maximum\\nbgauss.model";
+    private static final String logistic_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\equal\\logistic.model";
+    private static final String svm_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\equal\\svm.model";
+    private static final String forest_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\equal\\forest.model";
     public static final String training_path = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\training.1600000.processed.noemoticon.csv";
     private static final String dictionary_path = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\dictionary.txt";
     private static final String filteredWordsPath = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\lexicons\\filteredWords.txt";
@@ -61,10 +61,10 @@ public class MLMethod {
         init();
         //caseStudy();
         //buildArffTrain(true);
-        runNaiveBayes();
+        //runNaiveBayes();
         //runLogisticRegression(95000);
-        //runRandomForest(120000);
-        //runSVM(120000);
+        //runRandomForest(95000);
+        runSVM(1000000);
 
     }
 
@@ -97,6 +97,8 @@ public class MLMethod {
         NGramTokenizer tokenizer = new NGramTokenizer();
         tokenizer.setNGramMinSize(1);
         tokenizer.setNGramMaxSize(2);
+
+
         filter.setTokenizer(tokenizer);
         filter.setStemmer(new LovinsStemmer());
 
@@ -109,8 +111,8 @@ public class MLMethod {
         buildInstancesTrain(true, 0);
 
         boolean nominal = true;
-        NaiveBayesMultinomial nb = new NaiveBayesMultinomial();
-        //NaiveBayes nb = new NaiveBayes();
+        //NaiveBayesMultinomial nb = new NaiveBayesMultinomial();
+        NaiveBayes nb = new NaiveBayes();
         //nb.setOptions(new String[]{"-K", ""});
 
         train(nb, nb_file);
@@ -124,7 +126,7 @@ public class MLMethod {
         Logistic log = new Logistic();
         log.setOptions(new String[]{"-S", "-M", "10"});
 
-        //train(log, logistic_file);
+        train(log, logistic_file);
         test(logistic_file, nominal);
 
     }
@@ -140,7 +142,7 @@ public class MLMethod {
         //linear
         svm.setOptions(new String[]{"-K", "0"});
 
-        //train(svm, svm_file);
+        train(svm, svm_file);
         test(svm_file, nominal);
 
     }
@@ -151,7 +153,7 @@ public class MLMethod {
         boolean nominal = true;
         RandomForest forest = new RandomForest();
         forest.setOptions(new String[]{"-depth", "300"});
-        //train(forest, forest_file);
+        train(forest, forest_file);
         test(forest_file, nominal);
 
     }
@@ -319,15 +321,18 @@ public class MLMethod {
             vals[1] = data.attribute(1).addStringValue(text);
 
             if (isLexiconMethod) {
-                double score = lexiconMethod.analyzeTweet(tweet.getText(), false, false);
+                double score = lexiconMethod.analyzeTweet(tweet.getText(), true, false);
+                /*
                 if (score < -10) {
                     score = -10;
                 } else if (score > 10) {
                     score = 10;
                 }
-                score += 10;
 
-                vals[2] = score;
+                 */
+                score += 1;
+
+                vals[2] = data.attribute(2).indexOfValue(String.valueOf(score));
             }
 
             data.add(new DenseInstance(1.0, vals));
@@ -372,7 +377,12 @@ public class MLMethod {
         }
         atts.add(new Attribute("tweetText", (ArrayList<String>) null));
         if (isLexiconMethod) {
-            atts.add(new Attribute("lexiconScore"));
+            List<String> lexiconValues = new ArrayList<String>(3);
+            lexiconValues.add("-1.0");
+            lexiconValues.add("0.0");
+            lexiconValues.add("1.0");
+
+            atts.add(new Attribute("lexiconScore", lexiconValues));
         }
         Instances data = new Instances(name, atts, 0);
         return data;
@@ -411,16 +421,17 @@ public class MLMethod {
                         }
                         vals[0] = trainData.attribute(0).indexOfValue(String.valueOf(lexiconScore));
                     } else if (isLexiconMethod) {
-                        double lexiconScore = lexiconMethod.analyzeTweet(text, false, false);
-
+                        double lexiconScore = lexiconMethod.analyzeTweet(text, true, false);
+            /*
                         if (lexiconScore < -10) {
                             lexiconScore = -10;
                         } else if (lexiconScore > 10.0) {
                             lexiconScore = 10;
                         }
-                        lexiconScore += 10;
 
-                        vals[2] = lexiconScore;
+             */
+                        lexiconScore += 1;
+                        vals[2] = trainData.attribute(2).indexOfValue(String.valueOf(lexiconScore));
                         vals[0] = trainData.attribute(0).indexOfValue(String.valueOf(score));
                     } else {
                         vals[0] = trainData.attribute(0).indexOfValue(String.valueOf(score));
@@ -442,6 +453,7 @@ public class MLMethod {
         System.out.println("Training: " + counterNegative.get() + " negative tweets");
 
         trainData.setClassIndex(0);
+
         ConverterUtils.DataSink.write(trainDataPath, trainData);
         trainingData = trainData;
 
@@ -491,37 +503,11 @@ public class MLMethod {
         StringBuilder sb = new StringBuilder();
         for (String word : words) {
             word = word.replaceAll("(&amp)|(&quot)|(#)", "");
-            word = removeTripleChar(word);
             if (!filteredWords.contains(word)) {
                 sb.append(word).append(" ");
             }
         }
         return sb.toString();
-    }
-
-    private String removeTripleChar(String word) {
-        StringBuilder sb = new StringBuilder();
-        if (word.length() >= 1) {
-            char previousChar = word.charAt(0);
-            int count = 1;
-            sb.append(previousChar);
-
-            for (int i = 1; i < word.length(); i++) {
-                char c = word.charAt(i);
-                if (previousChar == c) {
-                    count++; //
-                    if (count < 3) {
-                        sb.append(c);
-                    }
-                } else {
-                    sb.append(c);
-                    count = 1;
-                }
-                previousChar = c;
-            }
-        }
-        return sb.toString();
-
     }
 
     public void caseStudy() throws Exception {
