@@ -29,6 +29,24 @@ Recall: 0.8260749724366042
 Precision: 0.8343541202672605
 F-Measure: 0.8301939058171744
 
+- Word Frequency
+** class weka.classifiers.bayes.NaiveBayesMultinomial Evaluation with Datasets: 1600000 **
+
+Correctly Classified Instances        4215               77.9978 %
+Incorrectly Classified Instances      1189               22.0022 %
+Kappa statistic                          0.4951
+Mean absolute error                      0.2795
+Root mean squared error                  0.3922
+Relative absolute error                 55.904  %
+Root relative squared error             78.4495 %
+Total Number of Instances             5404
+
+Confusion Matrix: [[1138.0, 638.0], [551.0, 3077.0]]
+Recall: 0.8481256890848953
+Precision: 0.8282637954239569
+F-Measure: 0.8380770802124473
+
+
 
 - Logistic Regression:
 
@@ -61,9 +79,9 @@ Root relative squared error             83.9133 %
 Total Number of Instances             5404
 
 Confusion Matrix: [[1194.0, 582.0], [620.0, 3008.0]]
-Recall: 0.
-Precision: 0.
-F-Measure: 0.
+Recall: 0.8291069459757442
+Precision: 0.8378830083565459
+F-Measure: 0.8334718758658909
 
 ** class weka.classifiers.trees.RandomForest Evaluation with Datasets: 95000 **
 
@@ -282,7 +300,7 @@ Confusion matrix
 
 Process finished with exit code 0
 
-Unigrams vs. Bigram vs. both:
+Unigrams vs. Bigram:
 
 ** class weka.classifiers.bayes.NaiveBayesMultinomial Unigram Evaluation with Datasets: 1600000 **
 

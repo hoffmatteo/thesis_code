@@ -6,7 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
-import weka.classifiers.bayes.NaiveBayes;
+import weka.classifiers.bayes.NaiveBayesMultinomial;
 import weka.classifiers.functions.LibSVM;
 import weka.classifiers.functions.Logistic;
 import weka.classifiers.meta.FilteredClassifier;
@@ -32,7 +32,7 @@ public class MLMethod {
     public static final String test_arff_nominal = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\testTweetsNominal.arff";
     public static final String test_arff_nominal_method3 = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\testTweetsNominalMethod3.arff";
     public static final String test_arff_nominal_method32 = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\testTweetsNominalMethod32.arff";
-    public static String nb_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\equal\\nbgauss.model";
+    public static String nb_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\maximum\\nbmulti.model";
     private static final String logistic_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\equal\\logistic.model";
     private static final String svm_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\equal\\svm.model";
     private static final String forest_file = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\models\\maximum\\forest.model";
@@ -108,11 +108,11 @@ public class MLMethod {
     }
 
     public void runNaiveBayes() throws Exception {
-        buildInstancesTrain(true, 95000);
+        buildInstancesTrain(true, 0);
 
         boolean nominal = true;
-        //NaiveBayesMultinomial nb = new NaiveBayesMultinomial();
-        NaiveBayes nb = new NaiveBayes();
+        NaiveBayesMultinomial nb = new NaiveBayesMultinomial();
+        //NaiveBayes nb = new NaiveBayes();
         //nb.setOptions(new String[]{"-K", ""});
 
         train(nb, nb_file);
