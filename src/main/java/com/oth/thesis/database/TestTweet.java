@@ -4,16 +4,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
-public class TrainingTweet {
+public class TestTweet {
     @Id
     private Long id;
     private String text;
     private double score;
 
-    public TrainingTweet() {
+    public TestTweet() {
     }
 
-    public TrainingTweet(Long id, String text, double score) {
+    public TestTweet(Long id, String text, double score) {
         this.id = id;
         this.text = text;
         this.score = score;

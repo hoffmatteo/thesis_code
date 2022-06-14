@@ -1,6 +1,6 @@
 package com.oth.thesis.ml;
 
-import com.oth.thesis.database.TrainingTweet;
+import com.oth.thesis.database.TestTweet;
 import com.oth.thesis.twitter.TwitterCrawler;
 import com.oth.thesis.twitter.TwitterData;
 import com.oth.thesis.twitter.TwitterResponse;
@@ -19,8 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
-public class TrainingData {
-    private final static String data = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\tweeti-a.dist.tsv";
+public class TestData {
     private final static String data1 = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\tweeti-b.dist.tsv";
     private final static String data2 = "C:\\Users\\matte\\Desktop\\OTH\\thesis_code\\data\\twitter4242.txt";
 
@@ -70,7 +69,7 @@ public class TrainingData {
                                         default:
                                             break;
                                     }
-                                    session.saveOrUpdate(new TrainingTweet(data.id, data.text, score));
+                                    session.saveOrUpdate(new TestTweet(data.id, data.text, score));
                                     session.getTransaction().commit();
                                     session.close();
                                 }
@@ -119,7 +118,7 @@ public class TrainingData {
                     }
 
 
-                    session.saveOrUpdate(new TrainingTweet(id.incrementAndGet(), components[2], score));
+                    session.saveOrUpdate(new TestTweet(id.incrementAndGet(), components[2], score));
                     session.getTransaction().commit();
                     session.close();
                 }

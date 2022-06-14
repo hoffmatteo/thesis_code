@@ -182,7 +182,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,java,maven,windows
-/data/training.1600000.processed.noemoticon.csv
+/data/training/training.1600000.processed.noemoticon.csv
 /models/nbmultitext.model
 /models/forest2.model
 /models/maximum/forest.model
@@ -190,10 +190,13 @@ $RECYCLE.BIN/
 
 
 /models/forestdelete.model
-/data/traindataFiltered.arff
+/data/training/traindataFiltered.arff
 /data/traindata.arff
-/data/traindataHybridMethod1.arff
+/data/training/traindataHybridMethod1.arff
+/data/training/traindataHybridMethod2.arff
+
 /data/traindataHybrid.arff
 /data/traindataHybridNegative.arff
 
 
+/data/training/traindata.arff

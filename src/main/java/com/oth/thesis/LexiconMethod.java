@@ -1,7 +1,7 @@
 package com.oth.thesis;
 
 import com.oth.thesis.database.AnalyzedTweet;
-import com.oth.thesis.database.TrainingTweet;
+import com.oth.thesis.database.TestTweet;
 import com.oth.thesis.twitter.TwitterCrawler;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -142,7 +142,7 @@ public class LexiconMethod {
         }
     }
 
-    public void calculateMeasures(List<TrainingTweet> tweets, boolean neutral) {
+    public void calculateMeasures(List<TestTweet> tweets, boolean neutral) {
         int correctTweets = 0;
         int falseTweets = 0;
         double trueneutral = 0;
@@ -166,7 +166,7 @@ public class LexiconMethod {
 
         numNoSentimentDetected = 0;
 
-        for (TrainingTweet tweet : tweets) {
+        for (TestTweet tweet : tweets) {
             double correctScore = tweet.getScore();
             if (correctScore == 0.0) {
                 if (neutral) {
@@ -289,14 +289,14 @@ public class LexiconMethod {
     public void evaluate(boolean neutral) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        List<TrainingTweet> tweets = session.createQuery("from TrainingTweet ", TrainingTweet.class).list();
-        List<TrainingTweet> dataset1 = new ArrayList<>();
-        List<TrainingTweet> dataset2 = new ArrayList<>();
-        tweets.forEach(trainingTweet -> {
-            if (trainingTweet.getId() <= 4242) {
-                dataset1.add(trainingTweet);
+        List<TestTweet> tweets = session.createQuery("from TestTweet ", TestTweet.class).list();
+        List<TestTweet> dataset1 = new ArrayList<>();
+        List<TestTweet> dataset2 = new ArrayList<>();
+        tweets.forEach(testTweet -> {
+            if (testTweet.getId() <= 4242) {
+                dataset1.add(testTweet);
             } else {
-                dataset2.add(trainingTweet);
+                dataset2.add(testTweet);
             }
         });
 

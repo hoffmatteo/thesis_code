@@ -162,6 +162,10 @@ Relative absolute error                 77.6442 %
 Root relative squared error             97.7483 %
 Total Number of Instances             5404
 
+TODO
+TODO
+TODO
+
 ** class weka.classifiers.bayes.NaiveBayes Evaluation with Datasets: 95000 **
 
 Correctly Classified Instances        3529               65.3035 %
@@ -225,38 +229,38 @@ Process finished with exit code 0
 Hybrid - Method 1 (with normalize)
 ** class weka.classifiers.bayes.NaiveBayesMultinomial Evaluation with Datasets: 1600000 **
 
-Correctly Classified Instances        4374               80.94   %
-Incorrectly Classified Instances      1030               19.06   %
-Kappa statistic                          0.5646
-Mean absolute error                      0.2291
-Root mean squared error                  0.3741
-Relative absolute error                 45.8188 %
-Root relative squared error             74.8151 %
+Correctly Classified Instances        4373               80.9215 %
+Incorrectly Classified Instances      1031               19.0785 %
+Kappa statistic                          0.5647
+Mean absolute error                      0.2297
+Root mean squared error                  0.3743
+Relative absolute error                 45.9425 %
+Root relative squared error             74.8526 %
 Total Number of Instances             5404
 
-Confusion Matrix: [[1233.0, 543.0], [487.0, 3141.0]]
-Recall: 0.8657662624035282
-Precision: 0.8526058631921825
-F-Measure: 0.8591356673960613
+Confusion Matrix: [[1237.0, 539.0], [492.0, 3136.0]]
+Recall: 0.86438809261301
+Precision: 0.8533333333333334
+F-Measure: 0.8588251403532796
 
 
 
 Hybrid - Method 2 (Lexicon for Training, neutral = ignore)
-** class weka.classifiers.bayes.NaiveBayesMultinomial Evaluation with Datasets: 973671 **
+** class weka.classifiers.bayes.NaiveBayesMultinomial Evaluation with Datasets: 1275783 **
 
-Correctly Classified Instances        4395               81.3286 %
-Incorrectly Classified Instances      1009               18.6714 %
-Kappa statistic                          0.5614
-Mean absolute error                      0.2335
-Root mean squared error                  0.3688
-Relative absolute error                 51.1065 %
-Root relative squared error             78.1362 %
+Correctly Classified Instances        4366               80.792  %
+Incorrectly Classified Instances      1038               19.208  %
+Kappa statistic                          0.5514
+Mean absolute error                      0.2499
+Root mean squared error                  0.3757
+Relative absolute error                 53.7994 %
+Root relative squared error             79.16   %
 Total Number of Instances             5404
 
-Confusion Matrix: [[1149.0, 627.0], [382.0, 3246.0]]
-Recall: 0.8947078280044102
-Precision: 0.8381099922540666
-F-Measure: 0.8654846020530595
+Confusion Matrix: [[1154.0, 622.0], [416.0, 3212.0]]
+Recall: 0.8853362734288864
+Precision: 0.8377673448095984
+F-Measure: 0.8608952023586169
 
 
 

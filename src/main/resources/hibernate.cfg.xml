@@ -19,7 +19,7 @@
 
         <!-- Names the annotated entity class -->
         <mapping class="com.oth.thesis.database.AnalyzedTweet"/>
-        <mapping class="com.oth.thesis.database.TrainingTweet"/>
+        <mapping class="com.oth.thesis.database.TestTweet"/>
         <mapping class="com.oth.thesis.database.CaseStudyTweet"/>
 
     </session-factory>
